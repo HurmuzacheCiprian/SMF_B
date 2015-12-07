@@ -1,4 +1,4 @@
-package main.model;
+package com.smf.main.model;
 
 import lombok.Builder;
 import lombok.Getter;

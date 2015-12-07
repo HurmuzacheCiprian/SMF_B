@@ -16,6 +16,14 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.selfmanagedfunds</groupId>
+            <artifactId>smf-domain</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>smf-capi</finalName>
         <plugins>

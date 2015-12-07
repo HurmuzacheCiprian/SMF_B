@@ -1,10 +1,8 @@
-package main.model;
+package com.smf.main.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 /**
  * Created by cipriach on 07.12.2015.
@@ -12,7 +10,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements Serializable {
-    private String userName;
+public class UserRegistration extends User {
+    private String firstName;
+    private String lastName;
     private String password;
 }
