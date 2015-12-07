@@ -11,6 +11,7 @@
     <modules>
         <module>smf-capi</module>
         <module>smf-domain</module>
+        <module>smf-service</module>
     </modules>
 
 
