@@ -86,4 +86,12 @@ public class SmfService {
         return true;
     }
 
+    public List<ExpensesResponse> getAllExpensesByCategory(String userName, Category category) {
+        List<Expense> categorisedExpenses = expenseDao.findByCategory(category);
+        return categorisedExpenses
+                .stream()
+                .map(expense -> ExpensesResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
 }
