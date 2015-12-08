@@ -1,9 +1,7 @@
 package com.smf.main.resources;
 
 import com.smf.main.SmfService;
-import com.smf.main.model.FundRegistration;
-import com.smf.main.model.FundResponse;
-import com.smf.main.model.FundsResponse;
+import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +24,23 @@ public class SmfResource {
 
     @RequestMapping(path = "/{userName}/funds", produces = "application/json", method = RequestMethod.GET)
     public FundsResponse getAllFunds(@PathVariable String userName) {
-        List<FundResponse> response = smfService.getAllFundsByUserName(userName);
-        return FundsResponse.builder().funds(response).build();
+        return FundsResponse.builder().funds(smfService.getAllFundsByUserName(userName)).build();
     }
+
+    @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
+    public ExpenseResponse getAllExpenses(@PathVariable("userName") String userName) {
+        return ExpenseResponse.builder().expense(smfService.getAllExpensesByUserName(userName)).build();
+    }
+
 
     @RequestMapping(path = "/{userName}/register/fund", method = RequestMethod.POST)
     public HttpStatus registerFund(@PathVariable("userName") String userName, @RequestBody FundRegistration fundRegistration) {
         return smfService.registerFund(userName, fundRegistration) == true ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+    }
+
+    @RequestMapping(path = "/{userName}/register/expense", method = RequestMethod.POST)
+    public HttpStatus registerExpense(@PathVariable("userName") String userName, @RequestBody ExpensesRegistration expensesRegistration) {
+        return smfService.registerExpense(userName, expensesRegistration) == true ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
     }
 
 }

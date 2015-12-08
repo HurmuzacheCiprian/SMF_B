@@ -1,5 +1,6 @@
 package com.smf.main.domain;
 
+import com.smf.main.entities.Expense;
 import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,9 @@ public interface UserDao extends CrudRepository<UserEntity, Long> {
 
     @Query("SELECT u.funds FROM UserEntity u WHERE u.userName = ?1")
     Set<Fund> findAllFundsByUserName(String userName);
+
+    @Query("SELECT u.expenses FROM UserEntity u where u.userName = ?1")
+    Set<Expense> findAllExpensesByUserName(String userName);
 
     UserEntity findByUserName(String userName);
 }

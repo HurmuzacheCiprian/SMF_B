@@ -8,8 +8,8 @@ public enum Category {
     CLOTHES,
     BOOKS,
     GAS,
-    ONLINE_SHOPPING,
-    ELECTRONICS,
-    FUN;
+    GAMES,
+    CAR_REPARISONS,
+    ELECTRONICS;
 
 }
