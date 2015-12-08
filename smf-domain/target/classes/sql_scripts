@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS User_Entity(
+	id BIGINT PRIMARY KEY,
+	createdDate DATE,
+	pass_hash VARCHAR(255),
+	firstName varchar(100),
+	lastName VARCHAR(100),
+	lastLogged DATE,
+	logginTries INT
+);
+
+CREATE TABLE IF NOT EXISTS Fund (
+	id BIGINT PRIMARY KEY,
+	name VARCHAR(50),
+	amount NUMERIC,
+	createdDate DATE,
+	user_id BIGINT REFERENCES App_User(id)	
+);
+
+
+CREATE TABLE IF NOT EXISTS Economy (
+	id BIGINT PRIMARY KEY,
+	amount NUMERIC,
+	createdDate DATE,
+	info VARCHAR(255),
+
+	user_id BIGINT REFERENCES App_User(id)	
+);
+
+CREATE TABLE IF NOT EXISTS Expense (
+	id BIGINT PRIMARY KEY,
+	category VARCHAR(50),
+	date DATE,
+	amount NUMERIC
+	user_id BIG INT REFERENCES App_User(id)
+);
+
+
+drop table App_User_Funds;
+drop table App_User_Economies;
+drop table App_User;

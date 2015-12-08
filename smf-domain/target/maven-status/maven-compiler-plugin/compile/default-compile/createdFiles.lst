@@ -1,0 +1,5 @@
+com\smf\main\entities\UserEntity.class
+com\smf\main\domain\UserDao.class
+com\smf\main\entities\Fund.class
+com\smf\main\entities\Economy.class
+com\smf\main\entities\Expense.class
