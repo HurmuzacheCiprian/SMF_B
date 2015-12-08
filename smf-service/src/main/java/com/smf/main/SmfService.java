@@ -6,10 +6,7 @@ import com.smf.main.domain.UserDao;
 import com.smf.main.entities.Expense;
 import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
-import com.smf.main.model.ExpensesRegistration;
-import com.smf.main.model.ExpensesResponse;
-import com.smf.main.model.FundRegistration;
-import com.smf.main.model.FundResponse;
+import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,6 +89,11 @@ public class SmfService {
                 .stream()
                 .map(expense -> ExpensesResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public FrequentCategory getMostFrequentlyUsedCategory() {
+        Expense response = expenseDao.findMostFrequentExpenseCategory();
+        return FrequentCategory.builder().category(response.getCategory()).build();
     }
 
 }

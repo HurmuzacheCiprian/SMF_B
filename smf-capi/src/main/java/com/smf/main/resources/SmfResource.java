@@ -2,10 +2,7 @@ package com.smf.main.resources;
 
 import com.smf.main.Category;
 import com.smf.main.SmfService;
-import com.smf.main.model.ExpenseResponse;
-import com.smf.main.model.ExpensesRegistration;
-import com.smf.main.model.FundRegistration;
-import com.smf.main.model.FundsResponse;
+import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +34,11 @@ public class SmfResource {
     @RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
     public ExpenseResponse getAllExpensesByCategory(@PathVariable("userName") String userName, @PathVariable("category") Category category) {
         return ExpenseResponse.builder().expense(smfService.getAllExpensesByCategory(userName, category)).build();
+    }
+
+    @RequestMapping(path = "/expenses/frequent", produces = "application/json", method = RequestMethod.GET)
+    public FrequentCategory getMostFrequentlyExpenseByCategory() {
+        return smfService.getMostFrequentlyUsedCategory();
     }
 
 
