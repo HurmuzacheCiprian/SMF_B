@@ -1,0 +1,61 @@
+package com.smf.main;
+
+import com.smf.main.domain.FundDao;
+import com.smf.main.domain.UserDao;
+import com.smf.main.entities.Fund;
+import com.smf.main.entities.UserEntity;
+import com.smf.main.model.FundRegistration;
+import com.smf.main.model.FundResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Created by cipriach on 08.12.2015.
+ */
+@Service
+public class SmfService {
+
+    private final FundDao fundDao;
+    private final UserDao userDao;
+
+    @Autowired
+    public SmfService(FundDao fundDao, UserDao userDao) {
+        this.fundDao = fundDao;
+        this.userDao = userDao;
+    }
+
+    public List<FundResponse> getAllFundsByUserName(final String userName) {
+        List<FundResponse> response = new ArrayList<FundResponse>();
+
+        Set<Fund> fundsResponse = userDao.findAllFundsByUserName(userName); //other method -> load the user by name and return its funds.
+
+        return fundsResponse
+                .stream()
+                .map(
+                        fund -> FundResponse.builder().fundName(fund.getName()).createdDate(fund.getCreatedDate()).amount(fund.getAmount()).build())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Transactional
+    public boolean registerFund(String userName, FundRegistration fundRegistration) {
+        UserEntity user = userDao.findByUserName(userName);
+        if(user == null) {
+            return false;
+        }
+        Fund fund = new Fund();
+        fund.setCreatedDate(new Date());
+        fund.setAmount(fundRegistration.getFundAmount());
+        fund.setName(fundRegistration.getFundName());
+        fund.setUserEntity(user);
+        fundDao.save(fund);
+        return true;
+    }
+
+}

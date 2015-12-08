@@ -29,7 +29,6 @@ public class CredentialsResource {
     @RequestMapping(path = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResponse> checkLoginCredentials(@RequestBody User user) {
-
         boolean isUserExisting = credentialsService.checkUser(user);
 
         return isUserExisting == false ?
