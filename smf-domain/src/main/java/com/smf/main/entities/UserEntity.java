@@ -1,13 +1,12 @@
 package com.smf.main.entities;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by cipriach on 07.12.2015.
@@ -15,7 +14,6 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserEntity implements Serializable {
 
     @Id
@@ -36,4 +34,13 @@ public class UserEntity implements Serializable {
     private Date lastLoggedIn;
 
     private Integer logginTries;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<Fund> funds;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<Economy> economies;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<Expense> expenses;
 }

@@ -12,6 +12,7 @@
         <module>smf-capi</module>
         <module>smf-domain</module>
         <module>smf-service</module>
+        <module>smf-model</module>
     </modules>
 
 
@@ -32,6 +33,18 @@
             <version>1.16.6</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+
+
     </dependencies>
 
 

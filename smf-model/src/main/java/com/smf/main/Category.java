@@ -1,0 +1,15 @@
+package com.smf.main;
+
+/**
+ * Created by cipriach on 08.12.2015.
+ */
+public enum Category {
+    FOOD,
+    CLOTHES,
+    BOOKS,
+    GAS,
+    ONLINE_SHOPPING,
+    ELECTRONICS,
+    FUN;
+
+}

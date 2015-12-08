@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CredentialsResource {
 
-    @Autowired
     private UserDao userDao;
 
-    @Autowired
     private CredentialsService credentialsService;
+
+    @Autowired
+    public CredentialsResource(UserDao userDao, CredentialsService credentialsService) {
+        this.userDao = userDao;
+        this.credentialsService = credentialsService;
+    }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(value = HttpStatus.OK)

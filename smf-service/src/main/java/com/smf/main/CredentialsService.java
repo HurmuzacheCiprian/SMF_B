@@ -2,10 +2,10 @@ package com.smf.main;
 
 import com.smf.main.domain.UserDao;
 import com.smf.main.entities.UserEntity;
-import com.smf.main.model.User;
-import com.smf.main.model.UserRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.smf.main.model.UserRegistration;
+import com.smf.main.model.User;
 
 import java.util.Date;
 
