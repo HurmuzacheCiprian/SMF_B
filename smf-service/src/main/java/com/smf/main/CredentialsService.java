@@ -2,10 +2,10 @@ package com.smf.main;
 
 import com.smf.main.domain.UserDao;
 import com.smf.main.entities.UserEntity;
+import com.smf.main.model.User;
+import com.smf.main.model.UserRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.smf.main.model.UserRegistration;
-import com.smf.main.model.User;
 
 import java.util.Date;
 
@@ -15,8 +15,12 @@ import java.util.Date;
 @Service
 public class CredentialsService {
 
-    @Autowired
     private UserDao userDao;
+
+    @Autowired
+    public CredentialsService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public boolean registerUser(UserRegistration userRegistration) {
         UserEntity entity = new UserEntity();
