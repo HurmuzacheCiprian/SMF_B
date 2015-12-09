@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by cipriach on 08.12.2015.
@@ -16,6 +16,6 @@ public class FundResponse {
 
     private String fundName;
     private Long amount;
-    private Date createdDate;
+    private String createdDate;
 
 }

@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +45,11 @@ public class SmfService {
 
         return fundsResponse
                 .stream()
-                .map(fund -> FundResponse.builder().fundName(fund.getName()).createdDate(fund.getCreatedDate()).amount(fund.getAmount()).build())
+                .map(fund -> FundResponse.builder()
+                        .fundName(fund.getName())
+                        .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(fund.getCreatedDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
+                        .amount(fund.getAmount())
+                        .build())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
