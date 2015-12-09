@@ -13,4 +13,5 @@ import lombok.Setter;
 @Setter
 public class FrequentCategory {
     private Category category;
+    private Long count;
 }

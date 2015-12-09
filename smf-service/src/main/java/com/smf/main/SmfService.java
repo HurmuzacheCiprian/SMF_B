@@ -1,5 +1,6 @@
 package com.smf.main;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smf.main.domain.ExpensesDao;
 import com.smf.main.domain.FundDao;
 import com.smf.main.domain.UserDao;
@@ -26,6 +27,8 @@ public class SmfService {
     private final FundDao fundDao;
     private final UserDao userDao;
     private final ExpensesDao expenseDao;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public SmfService(FundDao fundDao, UserDao userDao, ExpensesDao expenseDao) {
@@ -92,8 +95,9 @@ public class SmfService {
     }
 
     public FrequentCategory getMostFrequentlyUsedCategory() {
-        Expense response = expenseDao.findMostFrequentExpenseCategory();
-        return FrequentCategory.builder().category(response.getCategory()).build();
+        List<Object[]> response = expenseDao.findMostFrequentExpenseCategory();
+        Object[] o = response.get(0);   //the most frequent category and o[1] is the value of count
+        return FrequentCategory.builder().category(Category.valueOf(o[0].toString())).count(Long.valueOf(o[1].toString())).build();
     }
 
 }

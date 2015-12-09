@@ -17,6 +17,6 @@ public interface ExpensesDao extends CrudRepository<Expense, Long> {
     @Query("SELECT e FROM Expense e where e.category = ?1")
     List<Expense> findByCategory(Category category);
 
-    @Query("SELECT e,count(*) as c from Expense e GROUP BY e.category ORDER BY c DESC")
-    Expense findMostFrequentExpenseCategory();
+    @Query(value = "SELECT e.category,count(*) as c from Expense e GROUP BY e.category ORDER BY c DESC", nativeQuery = true)
+    List<Object[]> findMostFrequentExpenseCategory();
 }
