@@ -5,12 +5,12 @@
     var app = angular.module('smf');
 
     var FundsController = function ($scope, ngTableParams, FundsService, LoginService,$mdDialog,$mdMedia) {
-    $scope.customFullscreen = $mdMedia('sm');
+        $scope.customFullscreen = $mdMedia('sm');
+        $scope.registeredFundFailed = false;
         $scope.tableParams = new ngTableParams(
             {
-                filter: {
-                    fundName: "C"
-                }
+                page: 1,
+                count: 10
             }, {
                 getData: function (params) {
                     return FundsService.getFunds(LoginService.loggedUser).then(
@@ -48,11 +48,13 @@
                                     .then(function(registerData) {
                                       if(registerData != undefined && registerData.fundName != undefined && registerData.fundAmount != undefined) {
                                         FundsService.registerFund(LoginService.loggedUser,registerData.fundName,registerData.fundAmount)
-                                                                                        .then(function(dataa) {
-                                                                                            $scope.tableParams.reload()
+                                                                                        .then(function(data) {
+                                                                                            $scope.registeredFundFailed = false;
+                                                                                            $scope.tableParams.reload();
+                                                                                            $scope.hide();
                                                                                         }, function(error) {
-
-                                                                                            console.log('Error');
+                                                                                            $scope.registeredFundFailed = true;
+                                                                                            console.log('The registration of the fund was not ok. Try another fund name or try later.');
                                                                                         });
                                       }
                                     }, function() {

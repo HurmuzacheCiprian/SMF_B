@@ -6,6 +6,10 @@
         </md-button>
     </div>
     <div class="col-md-12 col-sm-3">
+        <div class="alert alert-danger" ng-show="registeredFundFailed == true" role="alert">Registering of the fund
+            failed. Try again with another fund name or
+            try again later!
+        </div>
         <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
             <tr ng-repeat="fund in $data">
                 <td data-title="'Fund name'">{{fund.fundName}}</td>
