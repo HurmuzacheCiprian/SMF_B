@@ -10,8 +10,21 @@
             return $http.get('/api/'+userName+'/funds');
         };
 
+        var registerFund = function(userName, fundName, fundAmount) {
+        console.log('Registering fund '+fundName+' with fund amount '+fundAmount)
+            return $http({
+                method: 'POST',
+                url: '/api/'+userName+'/register/fund',
+                data: {
+                    fundName: fundName,
+                    fundAmount: fundAmount
+                }
+            })
+        }
+
         return {
-            getFunds: getFunds
+            getFunds: getFunds,
+            registerFund: registerFund
         }
     });
 })();

@@ -1,0 +1,31 @@
+<md-dialog aria-label="Add Funding" style="padding: 42px;width: 400px;" ng-cloak>
+    <form>
+        <md-dialog-content>
+            <div class="row">
+                <div class="col-md-12">
+                    <md-input-container>
+                        <label>Fund name</label>
+                        <input required name="name" ng-model="registerData.fundName">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <md-input-container>
+                        <label>Fund amount</label>
+                        <input required name="amount" ng-model="registerData.fundAmount">
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="answer(registerData)">
+                Register
+            </md-button>
+            <md-button ng-click="answer('Close')" style="margin-right:20px;">
+                Close
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
