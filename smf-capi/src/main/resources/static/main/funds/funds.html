@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-md-12 col-sm-3">
+        <md-button class="md-fab" class="addButton" aria-label="Eat cake">
+            <!--<md-icon md-svg-src="img/icons/cake.svg"></md-icon>-->
+            <a class="glyphicon glyphicon-plus"></a>
+        </md-button>
+    </div>
+    <div class="col-md-12 col-sm-3">
+        <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
+            <tr ng-repeat="fund in $data">
+                <td data-title="'Fund name'">{{fund.fundName}}</td>
+                <td data-title="'Fund amount (RON)'">{{fund.amount}}</td>
+                <td data-title="'Created'">{{fund.createdDate}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

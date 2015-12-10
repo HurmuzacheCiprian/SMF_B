@@ -1,0 +1,37 @@
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Login to SMF</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span>Please enter your user and password to log in</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="background: #eee">
+                <form class="form col-md-12 center-block">
+                    <div class="form-group">
+                        <span ng-show="incorrectCredentials == true" style="color:red"><b>The user or password is incorrect</b></span>
+                        <input type="text" class="form-control input-lg" placeholder="Username..." ng-required="true" ng-model="userName">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-lg" placeholder="Password..." ng-required="true" ng-model="password">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" ng-click="signIn(userName, password)">Sign In</button>
+                        <span class="pull-right"><a ui-sref="register">Register</a></span><span><a href="#">Need help?</a></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background: #eee">
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

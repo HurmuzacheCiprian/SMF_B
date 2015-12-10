@@ -1,0 +1,44 @@
+<div class="container">
+    <hr>
+    <div class="container-fluid" style="width: 30.55%;margin-top: 50px; color:#888">
+
+        <div class="row">
+            <div class="col-md-12 col-sm-3">
+                <span><h2> {{loggedUser}} Manage</h2></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 22px;">
+            <div class="col-xs-6 col-sm-3">
+                <md-button ui-sref="home.economies">Your economies</md-button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 22px;">
+            <div class="col-xs-6 col-sm-3">
+                <md-button ui-sref="home.funds">Your funds</md-button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 22px;">
+            <div class="col-xs-6 col-sm-3">
+                <md-button ui-sref="home.expenses">Your expenses</md-button>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-3">
+                <span><h2>Last month info</h2></span>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <div class="container-fluid" style="margin-top: 50px; color:#888">
+        <div class="row">
+            <div class="col-md-12 col-sm-3">
+                <div autoscroll="true" ui-view></div>
+            </div>
+        </div>
+    </div>
+
+</div>

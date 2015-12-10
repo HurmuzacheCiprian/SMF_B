@@ -1,0 +1,42 @@
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Registration</h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-body" style="background: #eee">
+                <form class="form col-md-12 center-block">
+                    <div class="form-group">
+                        <span ng-show="alreadyUsedUserName == true" style="color:red"><b>The user {{userName}} is already in use</b></span>
+                        <input type="text" class="form-control input-lg" placeholder="Username..." ng-model="userName" ng-required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-lg" placeholder="First name..." ng-model="firstName" ng-required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-lg" placeholder="Last name...", ng-model="lastName" ng-required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-lg" placeholder="Password..." ng-model="password" ng-required="true">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" ng-click="register(userName,firstName,lastName,password)">Register</button>
+                    </div>
+                    <div class="form-group">
+                        <span class="pull-right"><a ui-sref="login">Back to login</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background: #eee">
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

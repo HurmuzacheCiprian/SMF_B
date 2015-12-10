@@ -1,0 +1,30 @@
+html, body {
+    /*height: 100%;*/
+    /* color: rgba(0, 0, 0, 0.87); */
+    /* background: white; */
+    /* position: relative; */
+}
+
+td {
+    text-align: center;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+a.md-button.md-default-theme.md-fab, a.md-button.md-fab, .md-button.md-default-theme.md-fab, .md-button.md-fab {
+    background-color: #888 !important;
+}
+
+a:hover, a:focus {
+    text-decoration: none !important;
+}
+
+.md-fab md-button md-ink-ripple {
+    background-color: white;
+}
+
+button > a {
+    color: white !important;
+}
