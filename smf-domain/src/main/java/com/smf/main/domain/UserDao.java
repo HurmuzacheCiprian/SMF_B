@@ -15,6 +15,7 @@ import java.util.Set;
  */
 @Transactional
 public interface UserDao extends CrudRepository<UserEntity, Long> {
+    @Query("SELECT u from UserEntity u where u.userName = ?1 AND u.password = ?2")
     UserEntity findByUserNameAndPassword(String userName, String password);
 
     @Query("SELECT u.funds FROM UserEntity u WHERE u.userName = ?1")

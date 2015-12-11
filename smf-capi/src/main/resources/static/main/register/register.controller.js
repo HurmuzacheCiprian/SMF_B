@@ -8,23 +8,16 @@
         $scope.alreadyUsedUserName = false;
         $scope.register = function(userName, firstName, lastName, password) {
             RegisterService.registerUser(userName, firstName, lastName, password).then(function(data) {
-                console.log(data);
+                if(data.data.isOk == false) {
+                    $scope.alreadyUsedUserName = true;
+                } else {
+                    $scope.alreadyUsedUserName = false;
+                }
             }, function(error) {
-
+                 $scope.alreadyUsedUserName = true;
             });
 
         };
-
-
-        //TODO this will be moved to the RegisterService
-        function checkAlreadyRegisteredUser(userName) {
-            if(userName == 'gigi') {
-                $scope.alreadyUsedUserName = true;
-            } else {
-                $scope.alreadyUsedUserName = false;
-            }
-        }
-
     };
 
     app.controller('RegisterController', ['$scope','RegisterService', RegisterController]);

@@ -29,16 +29,16 @@ public class CredentialsResource {
     @RequestMapping(path = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResponse> checkLoginCredentials(@RequestBody User user) {
-        boolean isUserExisting = credentialsService.checkUser(user);
-
-        return isUserExisting == false ?
+        return credentialsService.checkUser(user) == false ?
                 new ResponseEntity(UserResponse.builder().isOk(false).build(), HttpStatus.NOT_FOUND) :
                 new ResponseEntity(UserResponse.builder().isOk(true).build(), HttpStatus.OK);
 
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public HttpStatus registerUser(@RequestBody UserRegistration user) {
-        return credentialsService.registerUser(user) == true ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRegistration user) {
+        return credentialsService.registerUser(user) == false ?
+                new ResponseEntity(UserResponse.builder().isOk(false).build(), HttpStatus.BAD_REQUEST) :
+                new ResponseEntity(UserResponse.builder().isOk(true).build(), HttpStatus.OK);
     }
 }
