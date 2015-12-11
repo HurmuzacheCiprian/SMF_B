@@ -12,7 +12,7 @@
                     $scope.alreadyUsedUserName = true;
                 } else {
                     $scope.alreadyUsedUserName = false;
-                    $state.go('login');
+                    $state.go('login', {fromPage: 'register'});
                 }
             }, function(error) {
                  $scope.alreadyUsedUserName = true;

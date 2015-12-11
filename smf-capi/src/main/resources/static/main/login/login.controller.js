@@ -4,8 +4,19 @@
 (function () {
     var app = angular.module('smf');
 
-    var LoginController = function ($scope, $state, LoginService) {
+    var LoginController = function ($scope, $state, LoginService, $stateParams) {
         $scope.incorrectCredentials = false;
+        $scope.cameFromRegister = false;
+
+        (function() {
+                if($stateParams.fromPage != null && $stateParams.fromPage == 'register') {
+                   $scope.cameFromRegister = true;
+                } else {
+                   $scope.cameFromRegister = false;
+                }
+              }
+        )();
+
         $scope.signIn = function (userName, password) {
 
             LoginService.checkLoginCredentials(userName, password)
@@ -28,7 +39,7 @@
         }
     };
 
-    app.controller('LoginController', ['$scope', '$state', 'LoginService', LoginController]);
+    app.controller('LoginController', ['$scope', '$state', 'LoginService','$stateParams', LoginController]);
 
 
 })();

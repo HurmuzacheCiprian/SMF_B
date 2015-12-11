@@ -9,6 +9,7 @@
                                    $stateProvider
                                        .state('login', {
                                            url: '/login',
+                                           params: { fromPage : null},
                                            views: {
                                                'content@': {
                                                    templateUrl: './login/login.html',
