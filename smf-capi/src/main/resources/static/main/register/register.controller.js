@@ -4,11 +4,14 @@
 (function () {
     var app = angular.module('smf');
 
-    var RegisterController = function ($scope) {
+    var RegisterController = function ($scope,RegisterService) {
         $scope.alreadyUsedUserName = false;
-
         $scope.register = function(userName, firstName, lastName, password) {
-            checkAlreadyRegisteredUser(userName);
+            RegisterService.registerUser(userName, firstName, lastName, password).then(function(data) {
+                console.log(data);
+            }, function(error) {
+
+            });
 
         };
 
@@ -24,5 +27,5 @@
 
     };
 
-    app.controller('RegisterController', ['$scope', RegisterController]);
+    app.controller('RegisterController', ['$scope','RegisterService', RegisterController]);
 })();

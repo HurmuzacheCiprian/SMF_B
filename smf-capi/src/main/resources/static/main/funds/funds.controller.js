@@ -51,19 +51,14 @@
                                                                                         .then(function(data) {
                                                                                             $scope.registeredFundFailed = false;
                                                                                             $scope.tableParams.reload();
-                                                                                            $scope.hide();
                                                                                         }, function(error) {
                                                                                             $scope.registeredFundFailed = true;
                                                                                             console.log('The registration of the fund was not ok. Try another fund name or try later.');
                                                                                         });
+
                                       }
                                     }, function() {
                                       $scope.status = 'You cancelled the dialog.';
-                                    });
-                                    $scope.$watch(function() {
-                                      return $mdMedia('sm');
-                                    }, function(sm) {
-                                      $scope.customFullscreen = (sm === true);
                                     });
 
         }

@@ -16,9 +16,11 @@
                 <td data-title="'Fund amount (RON)'">{{fund.amount}}</td>
                 <td data-title="'Created'">{{fund.createdDate}}</td>
                 <td data-title="'Action'">
-                    <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"/>
+                    <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
+                       ng-click="edit(fund.fundName,fund.fundAmount)"/>
 
-                    <a class="glyphicon glyphicon-remove" style="cursor:pointer;"/>
+                    <a class="glyphicon glyphicon-remove" style="cursor:pointer;"
+                       ng-click="deleteFund(fund.fundName)"/>
                 </td>
             </tr>
         </table>
