@@ -4,7 +4,7 @@
 (function () {
     var app = angular.module('smf');
 
-    var LoginController = function ($scope, $rootScope, $state, LoginService) {
+    var LoginController = function ($scope, $state, LoginService) {
         $scope.incorrectCredentials = false;
         $scope.signIn = function (userName, password) {
 
@@ -28,7 +28,7 @@
         }
     };
 
-    app.controller('LoginController', ['$scope', '$rootScope', '$state', 'LoginService', LoginController]);
+    app.controller('LoginController', ['$scope', '$state', 'LoginService', LoginController]);
 
 
 })();

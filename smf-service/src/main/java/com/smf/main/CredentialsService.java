@@ -39,7 +39,13 @@ public class CredentialsService {
     }
 
     public boolean checkUser(User user) {
-        return userDao.findByUserNameAndPassword(user.getUserName(), user.getPassword()) == null ? false : true;
+        UserEntity foundUser = userDao.findByUserNameAndPassword(user.getUserName(), user.getPassword());
+        if (foundUser != null) {
+            foundUser.setLastLoggedIn(new Date());
+            userDao.save(foundUser);
+            return true;
+        }
+        return false;
     }
 
 
