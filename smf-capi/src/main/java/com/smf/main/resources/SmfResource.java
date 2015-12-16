@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api")
 public class SmfResource {
 
-    private SmfService smfService;
+    private final SmfService smfService;
 
     @Autowired
     public SmfResource(SmfService smfService) {
@@ -22,8 +22,12 @@ public class SmfResource {
     }
 
     @RequestMapping(path = "/{userName}/funds", produces = "application/json", method = RequestMethod.GET)
-    public FundsResponse getAllFunds(@PathVariable String userName) {
-        return FundsResponse.builder().funds(smfService.getAllFundsByUserName(userName)).build();
+    public FundsResponse getAllFunds(@PathVariable String userName,
+                                     @RequestParam("pageNumber") int pageNumber,
+                                     @RequestParam("perPage") int perPage,
+                                     @RequestParam("direction") String direction,
+                                     @RequestParam("sortField") String sortField) {
+        return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).build();
     }
 
     @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)

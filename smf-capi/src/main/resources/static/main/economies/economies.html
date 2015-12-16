@@ -1,5 +1,27 @@
 <div class="row">
     <div class="col-md-12 col-sm-3">
-        <span>Economies here</span>
+        <md-data-table-toolbar>
+            <h2 class="md-title">Economies</h2>
+        </md-data-table-toolbar>
+
+        <md-data-table-container>
+            <table md-data-table md-row-select="selected" md-progress="deferred">
+                <thead md-order="query.order" md-trigger="onOrderChange">
+                <tr>
+                    <th name="Economy amount" unit="RON" order-by="amount"></th>
+                    <th numeric name="Amount" order-by="calories.value"></th>
+                    <th numeric name="Month" unit="g" order-by="fat.value"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-auto-select ng-repeat="e in desserts.data">
+                    <td>{{e.name}}</td>
+                    <td>{{e.value}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+
+        <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
     </div>
 </div>

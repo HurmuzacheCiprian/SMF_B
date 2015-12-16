@@ -9,6 +9,8 @@ import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
 import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,25 @@ public class SmfService {
         return fundsResponse
                 .stream()
                 .map(fund -> FundResponse.builder()
+                        .id(fund.getId())
+                        .fundName(fund.getName())
+                        .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(fund.getCreatedDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
+                        .amount(fund.getAmount())
+                        .build())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public List<FundResponse> getAllPageableFunds(int pageNumber, int perPage, String sortDirection, String sortField, String userName) {
+        UserEntity userEntity = userDao.findByUserName(userName);
+        if (userEntity == null) {
+            return new ArrayList<>();
+        }
+        Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC: Sort.Direction.DESC;
+        List<Fund> fundsResponse = fundDao.findByuserEntity(userEntity, new PageRequest(pageNumber - 1, perPage,sort , sortField));
+        return fundsResponse
+                .stream()
+                .map(fund -> FundResponse.builder()
+                        .id(fund.getId())
                         .fundName(fund.getName())
                         .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(fund.getCreatedDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
                         .amount(fund.getAmount())

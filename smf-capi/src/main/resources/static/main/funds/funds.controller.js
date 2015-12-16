@@ -7,23 +7,46 @@
     var FundsController = function ($scope, ngTableParams, FundsService, LoginService,$mdDialog,$mdMedia) {
         $scope.customFullscreen = $mdMedia('sm');
         $scope.registeredFundFailed = false;
-        $scope.tableParams = new ngTableParams(
-            {
-                page: 1,
-                count: 10
-            }, {
-                getData: function (params) {
-                    return FundsService.getFunds(LoginService.loggedUser).then(
-                        function (data) {
-                            params.total(data.data.funds.length);
-                            return data.data.funds;
-                        }, function (error) {
-                            console.log(error);
-                        }
-                    )
-                }
-            }
-        );
+
+        function init() {
+            FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
+        }
+
+
+
+        $scope.selected = [];
+
+          $scope.query = {
+            filter: '',
+            order: 'name',
+            limit: 5,
+            page: 1
+          };
+
+          function success(data) {
+            $scope.funds = data.funds;
+            $scope.totalElements = data.funds.length;
+          }
+
+          $scope.search = function (predicate) {
+            $scope.query.filter = predicate;
+            $scope.deferred = FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
+          };
+
+          $scope.onOrderChange = function (order) {
+            $scope.query.order = order;
+            return FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
+          };
+
+          $scope.onPaginationChange = function (page, limit) {
+            $scope.query.page = page;
+            $scope.query.limit = limit;
+            return FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
+          };
+
+          init();
+
+
         $scope.registerFund = function(ev) {
                             $mdDialog.show({
                                       controller: function($scope, $mdDialog) {
