@@ -9,7 +9,7 @@
         $scope.registeredFundFailed = false;
 
         function init() {
-            FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
+            FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
         }
 
 
@@ -72,12 +72,14 @@
                                       if(registerData != undefined && registerData.fundName != undefined && registerData.fundAmount != undefined) {
                                         FundsService.registerFund(LoginService.loggedUser,registerData.fundName,registerData.fundAmount)
                                                                                         .then(function(data) {
+                                                                                            //FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
                                                                                             $scope.registeredFundFailed = false;
-                                                                                            $scope.tableParams.reload();
                                                                                         }, function(error) {
                                                                                             $scope.registeredFundFailed = true;
                                                                                             console.log('The registration of the fund was not ok. Try another fund name or try later.');
                                                                                         });
+
+
 
                                       }
                                     }, function() {
