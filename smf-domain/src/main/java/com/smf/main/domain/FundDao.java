@@ -4,6 +4,7 @@ import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

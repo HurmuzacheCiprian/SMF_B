@@ -25,7 +25,9 @@
 
           function success(data) {
             $scope.funds = data.funds;
-            $scope.totalElements = data.funds.length;
+
+            $scope.totalElements = data.totalElements;
+            console.log(data.totalElements);
           }
 
           $scope.search = function (predicate) {

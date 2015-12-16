@@ -61,8 +61,8 @@ public class SmfService {
         if (userEntity == null) {
             return new ArrayList<>();
         }
-        Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC: Sort.Direction.DESC;
-        List<Fund> fundsResponse = fundDao.findByuserEntity(userEntity, new PageRequest(pageNumber - 1, perPage,sort , sortField));
+        Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        List<Fund> fundsResponse = fundDao.findByuserEntity(userEntity, new PageRequest(pageNumber - 1, perPage, sort, sortField));
         return fundsResponse
                 .stream()
                 .map(fund -> FundResponse.builder()
@@ -72,6 +72,10 @@ public class SmfService {
                         .amount(fund.getAmount())
                         .build())
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public int getTotalFunds(String userName) {
+        return userDao.findAllFundsByUserName(userName).size();
     }
 
     @Transactional

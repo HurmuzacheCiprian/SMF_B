@@ -14,4 +14,5 @@ import java.util.List;
 @Builder
 public class FundsResponse {
     private List<FundResponse> funds;
+    private int totalElements;
 }

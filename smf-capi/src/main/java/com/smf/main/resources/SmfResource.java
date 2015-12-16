@@ -27,7 +27,7 @@ public class SmfResource {
                                      @RequestParam("perPage") int perPage,
                                      @RequestParam("direction") String direction,
                                      @RequestParam("sortField") String sortField) {
-        return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).build();
+        return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalFunds(userName)).build();
     }
 
     @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
