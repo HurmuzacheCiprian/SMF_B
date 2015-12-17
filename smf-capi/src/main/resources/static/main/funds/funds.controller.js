@@ -50,6 +50,7 @@
 
 
         $scope.registerFund = function(ev) {
+                            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
                             $mdDialog.show({
                                       controller: function($scope, $mdDialog) {
                                           $scope.hide = function() {
@@ -63,26 +64,24 @@
                                           }
                                       },
                                       templateUrl: "/main/funds/registration.window.html",
-                                      parent: angular.element(document.body),
+                                      parent: angular.element(document.getElementById("dialogParent")),
                                       targetEvent: ev,
                                       clickOutsideToClose: true,
                                       scope: $scope,
                                       preserveScope: true,
-                                      clickOutsideToClose:true
+                                      clickOutsideToClose:true,
+                                      fullscreen: useFullScreen
                                     })
                                     .then(function(registerData) {
                                       if(registerData != undefined && registerData.fundName != undefined && registerData.fundAmount != undefined) {
                                         FundsService.registerFund(LoginService.loggedUser,registerData.fundName,registerData.fundAmount)
-                                                                                        .then(function(data) {
-                                                                                            //FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
-                                                                                            $scope.registeredFundFailed = false;
-                                                                                        }, function(error) {
-                                                                                            $scope.registeredFundFailed = true;
-                                                                                            console.log('The registration of the fund was not ok. Try another fund name or try later.');
-                                                                                        });
-
-
-
+                                              .then(function(data) {
+                                              //FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
+                                              $scope.registeredFundFailed = false;
+                                              }, function(error) {
+                                              $scope.registeredFundFailed = true;
+                                              console.log('The registration of the fund was not ok. Try another fund name or try later.');
+                                             });
                                       }
                                     }, function() {
                                       $scope.status = 'You cancelled the dialog.';
