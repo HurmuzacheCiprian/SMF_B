@@ -12,8 +12,6 @@
             FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
         }
 
-
-
         $scope.selected = [];
 
           $scope.query = {
@@ -87,6 +85,12 @@
                                       $scope.status = 'You cancelled the dialog.';
                                     });
 
+        }
+
+        $scope.deleteFund = function(fundId) {
+            FundsService.deleteFund(LoginService.loggedUser,fundId).then(function(data) {
+                FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
+            });
         }
     };
 

@@ -17,4 +17,6 @@ public interface FundDao extends JpaRepository<Fund, Long> {
 
     List<Fund> findByuserEntity(UserEntity fk_user, Pageable pageable);
 
+    @Query(value = "select f.id from fund f INNER JOIN user_entity u ON f.fk_user = u.id where u.user_name=?2 and f.id = ?1", nativeQuery = true)
+    Long findFundByUser(Long fundId, String userName);
 }

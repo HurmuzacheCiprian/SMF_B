@@ -132,4 +132,14 @@ public class SmfService {
         return FrequentCategory.builder().category(Category.valueOf(o[0].toString())).count(Long.valueOf(o[1].toString())).build();
     }
 
+    @Transactional
+    public boolean deleteFund(String userName, Long fundId) {
+        Long id = fundDao.findFundByUser(fundId, userName);
+        if (id == null) {
+            return false;
+        }
+        fundDao.delete(id);
+        return true;
+    }
+
 }

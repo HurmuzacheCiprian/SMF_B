@@ -31,10 +31,10 @@
                     <td>{{fund.createdDate}}</td>
                     <td>
                         <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
-                           ng-click="edit(fund.fundName,fund.fundAmount)"/>
+                           ng-click="edit(fund.fundName,fund.id)"/>
 
                         <a class="glyphicon glyphicon-remove" style="cursor:pointer;"
-                           ng-click="deleteFund(fund.fundName)"/>
+                           ng-click="deleteFund(fund.id)"/>
                     </td>
                 </tr>
                 </tbody>

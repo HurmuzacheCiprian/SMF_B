@@ -17,7 +17,6 @@
         };
 
         var registerFund = function(userName, fundName, fundAmount) {
-        console.log('Registering fund '+fundName+' with fund amount '+fundAmount)
             return $http({
                 method: 'POST',
                 url: '/api/'+userName+'/register/fund',
@@ -26,11 +25,19 @@
                     fundAmount: fundAmount
                 }
             })
-        }
+        };
+
+        var deleteFund = function(userName,fundId) {
+            return $http({
+                method: 'DELETE',
+                url: '/api/'+userName+'/fund/'+fundId
+            });
+        };
 
         return {
             getFunds: getFunds,
-            registerFund: registerFund
+            registerFund: registerFund,
+            deleteFund: deleteFund
         }
     });
 })();

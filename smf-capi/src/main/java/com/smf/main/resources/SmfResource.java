@@ -56,5 +56,9 @@ public class SmfResource {
         return smfService.registerExpense(userName, expensesRegistration) == true ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
     }
 
+    @RequestMapping(path = "/{userName}/fund/{fundId}", method = RequestMethod.DELETE)
+    public HttpStatus deleteFund(@PathVariable("userName") String userName, @PathVariable("fundId") Long fundId) {
+        return smfService.deleteFund(userName, fundId) == true ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    }
 
 }
