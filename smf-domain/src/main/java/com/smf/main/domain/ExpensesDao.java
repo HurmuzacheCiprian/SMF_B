@@ -2,6 +2,8 @@ package com.smf.main.domain;
 
 import com.smf.main.Category;
 import com.smf.main.entities.Expense;
+import com.smf.main.entities.UserEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +21,6 @@ public interface ExpensesDao extends CrudRepository<Expense, Long> {
 
     @Query(value = "SELECT e.category,count(*) as c from Expense e GROUP BY e.category ORDER BY c DESC", nativeQuery = true)
     List<Object[]> findMostFrequentExpenseCategory();
+
+    List<Expense> findExpenseByUserEntity(UserEntity fk_user, Pageable pageable);
 }

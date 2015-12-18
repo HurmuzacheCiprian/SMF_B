@@ -30,15 +30,19 @@ public class SmfResource {
         return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalFunds(userName)).build();
     }
 
-    @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
-    public ExpenseResponse getAllExpenses(@PathVariable("userName") String userName) {
-        return ExpenseResponse.builder().expense(smfService.getAllExpensesByUserName(userName)).build();
+    @RequestMapping(path ="/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
+    public ExpensesResponse getAllExpenses(@PathVariable String userName,
+                                          @RequestParam("pageNumber") int pageNumber,
+                                          @RequestParam("perPage") int perPage,
+                                          @RequestParam("direction") String direction,
+                                          @RequestParam("sortField") String sortField){
+        return ExpensesResponse.builder().expenses(smfService.getAllPageableExpenses(pageNumber,perPage,direction, sortField,userName)).totalElements(smfService.getTotalExpenses(userName)).build();
     }
 
-    @RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
+    /*@RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
     public ExpenseResponse getAllExpensesByCategory(@PathVariable("userName") String userName, @PathVariable("category") Category category) {
-        return ExpenseResponse.builder().expense(smfService.getAllExpensesByCategory(userName, category)).build();
-    }
+        return ExpensesResponse.builder().expense(smfService.getAllExpensesByCategory(userName, category)).build();
+    }*/
 
     @RequestMapping(path = "/expenses/frequent", produces = "application/json", method = RequestMethod.GET)
     public FrequentCategory getMostFrequentlyExpenseByCategory() {
