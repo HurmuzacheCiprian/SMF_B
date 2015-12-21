@@ -11,7 +11,7 @@
             createdUrl+= '/expenses?pageNumber=' +query.page;
             createdUrl+= '&perPage=' +query.limit;
             createdUrl+='&direction='+(query.order.charAt(0) == '-'? 'desc' : 'asc');
-                        createdUrl+='&sortField='+(query.order.charAt(0) == '-'? query.order.substring(1,query.order.length) : query.order);
+            createdUrl+='&sortField='+(query.order.charAt(0) == '-'? query.order.substring(1,query.order.length) : query.order);
             return $http.get(createdUrl).then(function(data) {
                         callback(data.data);
             });
@@ -29,11 +29,19 @@
                     category: registerData.category
                 }
             });
-        }
+        };
+
+        var deleteExpense = function(userName, expenseId) {
+            return $http({
+                method: 'DELETE',
+                url:'/api/'+userName+'/expense/'+expenseId
+            });
+        };
 
          return{
             getExpenses: getExpenses,
-            registerExpense: registerExpense
+            registerExpense: registerExpense,
+            deleteExpense: deleteExpense
          }
     });
 

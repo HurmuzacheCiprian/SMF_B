@@ -166,4 +166,14 @@ public class SmfService {
         return true;
     }
 
+    public boolean deleteExpense(String userName, Long expenseId) {
+        Long id = expenseDao.findExpensesByUser(expenseId,userName);
+
+        if(id == null) {
+            return false;
+        }
+        expenseDao.delete(id);
+        return true;
+    }
+
 }

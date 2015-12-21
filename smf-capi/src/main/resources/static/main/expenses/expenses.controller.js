@@ -22,7 +22,6 @@
 
         function success(data){
             $scope.expenses = data.expenses;
-
             $scope.totalElements = data.totalElements;
 
         };
@@ -73,17 +72,21 @@
                                                 ExpensesService.registerExpense(LoginService.loggedUser,registerData)
                                                       .then(function(data) {
                                                       ExpensesService.getExpenses(LoginService.loggedUser,$scope.query, success);
-                                                      $scope.registeredFundFailed = false;
                                                       }, function(error) {
-                                                      $scope.registeredFundFailed = true;
-                                                      console.log('The registration of the fund was not ok. Try another fund name or try later.');
+
                                                      });
                                               }
                                             }, function() {
                                               $scope.status = 'You cancelled the dialog.';
                                             });
 
-                }
+                };
+
+        $scope.deleteExpense = function(expenseId) {
+            ExpensesService.deleteExpense(LoginService.loggedUser, expenseId).then(function(data) {
+                ExpensesService.getExpenses(LoginService.loggedUser,$scope.query, success);
+            });
+        };
 
     };
 

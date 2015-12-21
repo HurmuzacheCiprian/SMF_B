@@ -36,7 +36,7 @@ public class SmfResource {
                                           @RequestParam("perPage") int perPage,
                                           @RequestParam("direction") String direction,
                                           @RequestParam("sortField") String sortField){
-        return ExpensesResponse.builder().expenses(smfService.getAllPageableExpenses(pageNumber,perPage,direction, sortField,userName)).totalElements(smfService.getTotalExpenses(userName)).build();
+        return ExpensesResponse.builder().expenses(smfService.getAllPageableExpenses(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalExpenses(userName)).build();
     }
 
     /*@RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
@@ -63,6 +63,11 @@ public class SmfResource {
     @RequestMapping(path = "/{userName}/fund/{fundId}", method = RequestMethod.DELETE)
     public HttpStatus deleteFund(@PathVariable("userName") String userName, @PathVariable("fundId") Long fundId) {
         return smfService.deleteFund(userName, fundId) == true ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    }
+
+    @RequestMapping(path = "/{userName}/expense/{fundId}", method = RequestMethod.DELETE)
+    public HttpStatus deleteExpense(@PathVariable("userName") String userName, @PathVariable("fundId") Long fundId) {
+        return smfService.deleteExpense(userName, fundId) == true ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
 
 }

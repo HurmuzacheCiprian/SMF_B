@@ -23,4 +23,7 @@ public interface ExpensesDao extends CrudRepository<Expense, Long> {
     List<Object[]> findMostFrequentExpenseCategory();
 
     List<Expense> findExpenseByUserEntity(UserEntity fk_user, Pageable pageable);
+
+    @Query(value = "select e.id from expense e INNER JOIN user_entity u ON e.user_entity_id = u.id where u.user_name=?2 and e.id = ?1", nativeQuery = true)
+    Long findExpensesByUser(Long fundId, String userName);
 }
