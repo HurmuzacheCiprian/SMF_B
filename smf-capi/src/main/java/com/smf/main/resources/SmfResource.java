@@ -1,6 +1,5 @@
 package com.smf.main.resources;
 
-import com.smf.main.Category;
 import com.smf.main.SmfService;
 import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +29,12 @@ public class SmfResource {
         return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalFunds(userName)).build();
     }
 
-    @RequestMapping(path ="/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
     public ExpensesResponse getAllExpenses(@PathVariable String userName,
-                                          @RequestParam("pageNumber") int pageNumber,
-                                          @RequestParam("perPage") int perPage,
-                                          @RequestParam("direction") String direction,
-                                          @RequestParam("sortField") String sortField){
+                                           @RequestParam("pageNumber") int pageNumber,
+                                           @RequestParam("perPage") int perPage,
+                                           @RequestParam("direction") String direction,
+                                           @RequestParam("sortField") String sortField) {
         return ExpensesResponse.builder().expenses(smfService.getAllPageableExpenses(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalExpenses(userName)).build();
     }
 
