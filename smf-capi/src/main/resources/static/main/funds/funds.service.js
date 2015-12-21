@@ -33,7 +33,6 @@
                 url: '/api/'+userName+'/fund/'+fundId
             });
         };
-
         return {
             getFunds: getFunds,
             registerFund: registerFund,
