@@ -4,7 +4,7 @@
 (function () {
     var app = angular.module('smf');
 
-    var FundsController = function ($scope, ngTableParams, FundsService, LoginService,$mdDialog,$mdMedia) {
+    var FundsController = function ($scope,FundsService, LoginService,$mdDialog,$mdMedia) {
         $scope.customFullscreen = $mdMedia('sm');
         $scope.registeredFundFailed = false;
 
@@ -23,9 +23,7 @@
 
           function success(data) {
             $scope.funds = data.funds;
-
             $scope.totalElements = data.totalElements;
-            console.log(data.totalElements);
           }
 
           $scope.search = function (predicate) {
@@ -47,7 +45,7 @@
           init();
 
 
-        $scope.registerFund = function(ev) {
+          $scope.registerFund = function(ev) {
                             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
                             $mdDialog.show({
                                       controller: function($scope, $mdDialog) {
@@ -85,15 +83,15 @@
                                       $scope.status = 'You cancelled the dialog.';
                                     });
 
-        }
+          }
 
-        $scope.deleteFund = function(fundId) {
+          $scope.deleteFund = function(fundId) {
             FundsService.deleteFund(LoginService.loggedUser,fundId).then(function(data) {
                 FundsService.getFunds(LoginService.loggedUser,$scope.query, success);
             });
-        }
+          }
     };
 
-    app.controller('FundsController', ['$scope', 'ngTableParams', 'FundsService', 'LoginService','$mdDialog','$mdMedia', FundsController]);
+    app.controller('FundsController', ['$scope', 'FundsService', 'LoginService','$mdDialog','$mdMedia', FundsController]);
 
 })();

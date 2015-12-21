@@ -4,7 +4,7 @@
 (function() {
     var app = angular.module('smf');
 
-    var ExpensesController = function($scope, ngTableParams, ExpensesService, LoginService, $mdDialog,$mdMedia) {
+    var ExpensesController = function($scope, ExpensesService, LoginService, $mdDialog,$mdMedia) {
 
         $scope.categories = ['FOOD','CLOTHES','BOOKS','GAS','GAMES','CAR_REPARISONS','ELECTRONICS'];
 
@@ -90,6 +90,6 @@
 
     };
 
-    app.controller('ExpensesController',['$scope','ngTableParams', 'ExpensesService', 'LoginService','$mdDialog','$mdMedia',ExpensesController]);
+    app.controller('ExpensesController',['$scope', 'ExpensesService', 'LoginService','$mdDialog','$mdMedia',ExpensesController]);
 
 })();
