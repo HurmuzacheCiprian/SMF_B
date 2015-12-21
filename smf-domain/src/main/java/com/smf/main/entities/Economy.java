@@ -20,6 +20,8 @@ public class Economy {
     private Long amount;
     private Date createdDate;
     private String info;
+    private boolean dailyEconomy;
+    private int prevDay;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")

@@ -14,4 +14,5 @@ import java.util.List;
 @Setter
 public class EconomiesResponse {
     private List<EconomyResponse> economies;
+    private int totalElements;
 }

@@ -3,11 +3,12 @@ package com.smf.main.domain;
 import com.smf.main.entities.Expense;
 import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,4 +26,7 @@ public interface UserDao extends JpaRepository<UserEntity, Long> {
     Set<Expense> findAllExpensesByUserName(String userName);
 
     UserEntity findByUserName(String userName);
+
+    @Query(value = "select u.user_name from user_entity u LEFT JOIN economy e ON u.id = e.user_entity_id where (e.prev_day != ?1 OR e.prev_day IS NULL)", nativeQuery = true)
+    List<String> getUsersWithNoEconomyForPreviousDay(int dayOfTheMonth);
 }

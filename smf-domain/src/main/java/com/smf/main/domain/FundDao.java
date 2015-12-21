@@ -19,4 +19,7 @@ public interface FundDao extends JpaRepository<Fund, Long> {
 
     @Query(value = "select f.id from fund f INNER JOIN user_entity u ON f.fk_user = u.id where u.user_name=?2 and f.id = ?1", nativeQuery = true)
     Long findFundByUser(Long fundId, String userName);
+
+    @Query(value = "select sum(f.amount) from fund f where f.fk_user = ?1", nativeQuery = true)
+    Long findTotalAmountForUser(Long userId);
 }
