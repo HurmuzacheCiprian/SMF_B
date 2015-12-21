@@ -13,7 +13,7 @@
         $scope.selected = [];
         $scope.query = {
             filter: '',
-            order: 'name',
+            order: 'expenseName',
             limit: 5,
             page: 1
         };

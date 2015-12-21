@@ -74,34 +74,36 @@ public class SmfService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public List<ExpenseResponse> getAllPageableExpenses(int pageNumber, int perPage, String sortDirection, String sortField, String userName){
+    public List<ExpenseResponse> getAllPageableExpenses(int pageNumber, int perPage, String sortDirection, String sortField, String userName) {
         UserEntity userEntity = userDao.findByUserName(userName);
-        if(userEntity == null){
+        if (userEntity == null) {
             return new ArrayList<>();
         }
         Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
-        List<Expense> expensesResponse = expenseDao.findExpenseByUserEntity(userEntity, new PageRequest(pageNumber - 1, perPage, sort, sortDirection,sortField));
+        List<Expense> expensesResponse = expenseDao.findExpenseByUserEntity(userEntity, new PageRequest(pageNumber - 1, perPage, sort, sortField));
 
         return expensesResponse
                 .stream()
                 .map(expense -> ExpenseResponse.builder()
-                    .id(expense.getId())
-                    .expenseName(expense.getExpenseName())
-                    .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expense.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
-                            .amount(expense.getAmount())
-                            .category(expense.getCategory())
-                            .build())
+                        .id(expense.getId())
+                        .expenseName(expense.getExpenseName())
+                        .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expense.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
+                        .amount(expense.getAmount())
+                        .category(expense.getCategory())
+                        .build())
                 .collect(Collectors.toCollection(ArrayList::new));
 
 
     }
+
     public int getTotalFunds(String userName) {
         return userDao.findAllFundsByUserName(userName).size();
     }
 
-    public int getTotalExpenses(String userName){
+    public int getTotalExpenses(String userName) {
         return userDao.findAllExpensesByUserName(userName).size();
     }
+
     @Transactional
     public boolean registerFund(String userName, FundRegistration fundRegistration) {
         UserEntity user = userDao.findByUserName(userName);

@@ -12,13 +12,13 @@
         <md-data-table-container>
             <table md-data-table md-progress="deferred">
                 <thead md-order="query.order" md-trigger="onOrderChange">
-                    <tr>
-                        <th numeric name="Expense name" order-by="name"></th>
-                        <th numeric name="Category" order-by="category"></th>
-                        <th numeric name="Expense amount" unit="RON" order-by="amount"></th>
-                        <th numeric name="Created" order-by="createdDate"></th>
-                        <th numeric name="Action"></th>
-                    </tr>
+                <tr>
+                    <th numeric name="Expense name" order-by="expenseName"></th>
+                    <th numeric name="Category" order-by="category"></th>
+                    <th numeric name="Expense amount" unit="RON" order-by="amount"></th>
+                    <th numeric name="Created" order-by="date"></th>
+                    <th numeric name="Action"></th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr md-auto-select ng-repeat="expense in expenses">
@@ -40,7 +40,6 @@
                                   md-limit="query.page"
                                   md-total="{{totalElements}}"
                                   md-trigger="onPaginationChange">
-
         </md-date-table-pagination>
     </div>
 </div>
