@@ -1,6 +1,5 @@
 package com.smf.main;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smf.main.domain.ExpensesDao;
 import com.smf.main.domain.FundDao;
 import com.smf.main.domain.UserDao;
@@ -32,8 +31,6 @@ public class SmfService {
     private final FundDao fundDao;
     private final UserDao userDao;
     private final ExpensesDao expenseDao;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public SmfService(FundDao fundDao, UserDao userDao, ExpensesDao expenseDao) {
@@ -128,7 +125,7 @@ public class SmfService {
     }
 
     @Transactional
-    public boolean registerExpense(String userName, ExpensesRegistration economyRegistration) {
+    public boolean registerExpense(String userName, ExpensesRegistration expensesRegistration) {
         UserEntity userEntity = userDao.findByUserName(userName);
         if (userEntity == null) {
             return false;
@@ -137,8 +134,9 @@ public class SmfService {
         Expense expense = new Expense();
         expense.setDate(new Date());
         expense.setUserEntity(userEntity);
-        expense.setAmount(economyRegistration.getAmount());
-        expense.setCategory(economyRegistration.getCategory());
+        expense.setAmount(expensesRegistration.getAmount());
+        expense.setExpenseName(expensesRegistration.getExpenseName());
+        expense.setCategory(expensesRegistration.getCategory());
         expenseDao.save(expense);
 
         return true;

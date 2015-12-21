@@ -15,5 +15,6 @@ public class ExpensesRegistration {
 
     private Long amount;
     private Category category;
+    private String expenseName;
     private String info;
 }

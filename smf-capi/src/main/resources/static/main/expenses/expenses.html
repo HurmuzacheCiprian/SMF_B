@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12 col-sm-3">
-        <md-button class="md-fab" class="addButton" aria-label="Eat cake" ng-click="">
+        <md-button class="md-fab" class="addButton" aria-label="Eat cake" ng-click="registerExpense($event)">
             <a class="glyphicon glyphicon-plus"></a>
         </md-button>
     </div>
@@ -22,14 +22,14 @@
                 </thead>
                 <tbody>
                 <tr md-auto-select ng-repeat="expense in expenses">
-                    <td>{{expense.name</td>
+                    <td>{{expense.expenseName}}</td>
                     <td>{{expense.category}}</td>
-                    <td>{{expense.amount</td>
-                    <td>{{expense.createDate}}</td>
+                    <td>{{expense.amount}}</td>
+                    <td>{{expense.createdDate}}</td>
                     <td>
                         <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
                            ng-click="edit(expense.name,expense.id)"/>
-                        <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
+                        <a class="glyphicon glyphicon-remove" style="margin-right: 10px; cursor:pointer;"
                            ng-click="deleteExpense(expense.id)"/>
                     </td>
                 </tr>

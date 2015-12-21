@@ -1,0 +1,46 @@
+<md-dialog ng-cloak>
+    <form>
+        <md-dialog-content style="padding: 42px;width: 400px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <md-input-container>
+                        <label>Fund name</label>
+                        <input name="name" ng-model="registerData.expenseName">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <md-input-container>
+                        <label>Expense amount</label>
+                        <input name="amount" ng-model="registerData.amount">
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <md-input-container>
+                        <label>Category</label>
+                        <md-select ng-model="registerData.category">
+                            <md-option ng-repeat="c in categories" value="{{c}}">{{c}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <span flex></span>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <md-button ng-click="answer(registerData)">
+                        Register
+                    </md-button>
+                    <md-button ng-click="answer('Close')">
+                        Close
+                    </md-button>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

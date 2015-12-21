@@ -17,8 +17,23 @@
             });
          }
 
+        var registerExpense = function(userName, registerData) {
+            var registerUrl = "/api/"+userName+"/register/expense";
+
+            return $http({
+                method: 'POST',
+                url: registerUrl,
+                data: {
+                    expenseName: registerData.expenseName,
+                    amount: registerData.amount,
+                    category: registerData.category
+                }
+            });
+        }
+
          return{
-            getExpenses: getExpenses
+            getExpenses: getExpenses,
+            registerExpense: registerExpense
          }
     });
 
