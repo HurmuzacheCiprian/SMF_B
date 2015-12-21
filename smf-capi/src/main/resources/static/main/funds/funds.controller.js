@@ -62,7 +62,7 @@
                                           }
                                       },
                                       templateUrl: "/main/funds/registration.window.html",
-                                      parent: angular.element(document.getElementById("dialogParent")),
+                                      parent: angular.element(document.body),
                                       targetEvent: ev,
                                       clickOutsideToClose: true,
                                       scope: $scope,
@@ -74,7 +74,7 @@
                                       if(registerData != undefined && registerData.fundName != undefined && registerData.fundAmount != undefined) {
                                         FundsService.registerFund(LoginService.loggedUser,registerData.fundName,registerData.fundAmount)
                                               .then(function(data) {
-                                              //FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
+                                              FundsService.getFunds(LoginService.loggedUser,$scope.query, success)
                                               $scope.registeredFundFailed = false;
                                               }, function(error) {
                                               $scope.registeredFundFailed = true;
