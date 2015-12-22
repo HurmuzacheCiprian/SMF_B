@@ -41,7 +41,7 @@ public class DailyExpensesScheduler {
      * <p>
      * 24h -> 86400000 ms
      */
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 1 * 3600 * 1000)
     public void computeHourlyExpensesForAllUsers() {
 //        LocalDate today = LocalDate.now();
 //        LocalDate yesterday = today.minusDays(1);
@@ -54,16 +54,20 @@ public class DailyExpensesScheduler {
         List<UserEntity> users = userDao.findAll();
 
         for (UserEntity user : users) {
-            Long totalAmountDailyExpenses = expensesDao.findTotalAmountDailyExpenses(user.getId(), month, day);
+            Double totalAmountDailyExpenses = expensesDao.findTotalAmountDailyExpenses(user.getId(), month, day);
             if (totalAmountDailyExpenses == null) {
                 logger.info("User with user name {} has no expense until {}", user.getUserName(), currentDateTime);
             } else {
-                Long totalFunds = fundDao.findTotalAmountForUser(user.getId());
+                Double totalFunds = fundDao.findTotalAmountForUser(user.getId());
 
                 if (totalFunds == null) {
                     logger.info("User with user name {} has no funds registered", user.getUserName());
                 } else {
-                    user.setActualFunds(totalFunds - totalAmountDailyExpenses);
+                    if(user.getActualFunds() != null) {
+                        user.setActualFunds(user.getActualFunds() - totalAmountDailyExpenses);
+                    } else {
+                        user.setActualFunds(totalFunds - totalAmountDailyExpenses);
+                    }
                     userDao.save(user);
                 }
             }

@@ -22,7 +22,7 @@ public class Fund {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Long amount;
+    private Double amount;
     private Date createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -35,7 +35,7 @@ public class UserEntity implements Serializable {
 
     private Integer logginTries;
 
-    private Long actualFunds;
+    private Double actualFunds;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<Fund> funds;
