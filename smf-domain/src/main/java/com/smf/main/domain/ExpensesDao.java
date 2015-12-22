@@ -27,13 +27,10 @@ public interface ExpensesDao extends CrudRepository<Expense, Long> {
     @Query(value = "select e.id from expense e INNER JOIN user_entity u ON e.user_entity_id = u.id where u.user_name=?2 and e.id = ?1", nativeQuery = true)
     Long findExpensesByUser(Long fundId, String userName);
 
-    @Query(value = "select e from Expense e where e.user_entity_id = ?1 and extract(day from e.created_date) = ?2", nativeQuery = true)
-    List<Expense> findDailyExpenses(Long userId, int date);
-
     @Query(value = "select e from Expense e where e.user_entity_id = ?1", nativeQuery = true)
     List<Expense> findExpensesByUserId(Long userId);
 
-    @Query(value = "select sum(e.amount) from Expense e where e.user_entity_id = ?1 and extract(day from e.date) = ?2", nativeQuery = true)
-    Long findTotalAmountDailyExpenses(Long userId, int dayOfMonth);
+    @Query(value = "select sum(e.amount) from Expense e where e.user_entity_id = ?1 and extract(month from e.date) = ?2 and extract(day from e.date) = ?3 ", nativeQuery = true)
+    Long findTotalAmountDailyExpenses(Long userId, int month, int dayOfMonth);
 
 }
