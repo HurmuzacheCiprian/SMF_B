@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -70,7 +69,7 @@ public class ExpenseReportService {
 
             logger.debug("Found {} expenses {}", expenseReports.size(), expenseReports);
             return ExpenseReportResponse.builder()
-                    .expenseReports(expenseReports).remainingFunds(totalFundsAmount - totalAmount).build();
+                    .expenseReports(expenseReports).remainingFunds(totalFundsAmount - totalAmount).totalFunds(totalFundsAmount).build();
 
         }
 
@@ -89,7 +88,7 @@ public class ExpenseReportService {
             Double amount = bd.doubleValue();
             remaningFunds += amount;
             Double percentage = ((amount * 100) / totalFunds);
-            categoryReportList.add(CategoryReport.builder().category(category).percentage(String.format("%.3f", percentage)+"%").totalAmount(amount).build());
+            categoryReportList.add(CategoryReport.builder().category(category).percentage(String.format("%.3f", percentage) + "%").totalAmount(amount).build());
         }
         return CategoryReportResponse.builder().categoryReportList(categoryReportList).totalFunds(totalFunds).remainingFunds(totalFunds - remaningFunds).build();
     }

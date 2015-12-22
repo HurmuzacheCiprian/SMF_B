@@ -6,7 +6,7 @@
 
     var ExpensesController = function($scope, ExpensesService, LoginService, $mdDialog,$mdMedia) {
 
-        $scope.categories = ['FOOD','CLOTHES','BOOKS','GAS','GAMES','CAR_REPARISONS','ELECTRONICS'];
+        $scope.categories = ['FOOD','CLOTHES','BOOKS','GAS','GAMES','CAR_REPARISONS','ELECTRONICS','BILLS','RENT'];
 
         function init(){
             ExpensesService.getExpenses(LoginService.loggedUser, $scope.query, success);

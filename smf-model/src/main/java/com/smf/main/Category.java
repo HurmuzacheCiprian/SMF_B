@@ -10,6 +10,8 @@ public enum Category {
     GAS,
     GAMES,
     CAR_REPARISONS,
+    BILLS,
+    RENT,
     ELECTRONICS;
 
 }
