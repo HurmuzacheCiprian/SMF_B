@@ -69,7 +69,7 @@ public class ExpenseReportService {
 
             logger.debug("Found {} expenses {}", expenseReports.size(), expenseReports);
             return ExpenseReportResponse.builder()
-                    .expenseReports(expenseReports).remainingFunds(totalFundsAmount - totalAmount).totalFunds(totalFundsAmount).build();
+                    .expenseReports(expenseReports).remainingFunds(totalFundsAmount - totalAmount).currentReportDate(localDateTime.getYear() + "-" + localDateTime.getMonthValue() + "-" + localDateTime.getDayOfMonth()).totalFunds(totalFundsAmount).build();
 
         }
 

@@ -16,4 +16,5 @@ public class ExpenseReportResponse {
     private List<ExpenseReport> expenseReports;
     private Double remainingFunds;
     private Double totalFunds;
+    private String currentReportDate;
 }

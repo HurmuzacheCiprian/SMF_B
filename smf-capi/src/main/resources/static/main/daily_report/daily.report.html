@@ -1,0 +1,52 @@
+<div class="row" style="margin-bottom:100px;">
+    <div class="row">
+        <h2>Your daily report for {{currentReportDate}}</h2>
+        <a ng-class="expenseReport == undefined ? 'glyphicon glyphicon-refresh glyphicon-refresh-animate' : 'glyphicon glyphicon-refresh' "
+           ng-click="getDailyReport()"></a>
+    </div>
+
+    <div class=" row">
+        <h3>Expenses</h3>
+
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td>Expense name</td>
+                    <td>Amount</td>
+                    <td>Category</td>
+                    <td>Created Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="report in expenseReport">
+                    <td>{{report.expenseName}}</td>
+                    <td>{{report.expenseAmount}}</td>
+                    <td>{{report.category}}</td>
+                    <td>{{report.date}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <hr>
+    <div class="row">
+        <h3>Income status</h3>
+
+        <div class="col-md-2">
+            <p class="text-left">Total funds</p>
+        </div>
+        <div class="col-md-1">
+            <p class="text-right">{{totalFunds}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p class="text-left">Remaining funds</p>
+        </div>
+        <div class="col-md-1">
+            <p class="text-right">{{remainingFunds}}</p>
+        </div>
+    </div>
+</div>
