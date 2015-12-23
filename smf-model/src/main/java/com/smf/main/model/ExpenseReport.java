@@ -14,7 +14,6 @@ import lombok.ToString;
 @Setter
 @ToString(of = {"expenseName", "expenseAmount", "category", "date"})
 public class ExpenseReport {
-
     private String expenseName;
     private Long expenseAmount;
     private Category category;
