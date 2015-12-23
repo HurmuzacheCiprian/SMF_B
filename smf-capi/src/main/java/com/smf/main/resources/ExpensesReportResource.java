@@ -4,10 +4,9 @@ import com.smf.main.ExpenseReportService;
 import com.smf.main.model.CategoryReportResponse;
 import com.smf.main.model.ExpenseReportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 /**
  * Created by cipriach on 22.12.2015.
@@ -25,9 +24,19 @@ public class ExpensesReportResource {
     }
 
     @RequestMapping(path = "/monthly/{userName}/categories", method = RequestMethod.GET)
-    public CategoryReportResponse getCategoryExpenseReport(@PathVariable ("userName") String userName){
+    public CategoryReportResponse getCategoryExpenseReport(@PathVariable("userName") String userName) {
         return expenseReportService.getMonthlyReportPerCategory(userName);
     }
 
-
+    @RequestMapping(path = "/history/{userName}/categories", method = RequestMethod.GET)
+    public ExpenseReportResponse getHistoryCategoryExpenseReport(@PathVariable("userName") String userName,
+                                                                 @RequestParam("month") int month,
+                                                                 @RequestParam("day") int dayOfMonth,
+                                                                 @RequestParam("year") int year) {
+        try {
+            return expenseReportService.getHistoryReport(userName, year, month, dayOfMonth);
+        } catch (IOException e) {
+            return new ExpenseReportResponse();
+        }
+    }
 }

@@ -1,9 +1,12 @@
 package com.smf.main;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smf.main.domain.ExpenseReportHistoryDao;
 import com.smf.main.domain.ExpensesDao;
 import com.smf.main.domain.FundDao;
 import com.smf.main.domain.UserDao;
 import com.smf.main.entities.Expense;
+import com.smf.main.entities.ExpenseReportHistory;
 import com.smf.main.entities.UserEntity;
 import com.smf.main.model.CategoryReport;
 import com.smf.main.model.CategoryReportResponse;
@@ -15,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -41,6 +46,11 @@ public class ExpenseReportService {
     @Autowired
     private FundDao fundDao;
 
+    @Autowired
+    private ExpenseReportHistoryDao expenseReportHistoryDao;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     public ExpenseReportResponse getDailyExpenseReport(String userName) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -57,19 +67,35 @@ public class ExpenseReportService {
         }
 
         List<Expense> expenses = expensesDao.findExpensesByDayAndMonth(userEntity.getId(), localDateTime.getDayOfMonth(), localDateTime.getMonthValue());
+        ExpenseReportResponse expenseReportResponse = new ExpenseReportResponse();
         if (expenses.size() == 0) {
             logger.debug("No expenses found for user {}", userName);
-            return ExpenseReportResponse.builder().expenseReports(new ArrayList<>()).remainingFunds(totalFundsAmount).build();
+            expenseReportResponse.setExpenseReports(new ArrayList<>());
+            expenseReportResponse.setRemainingFunds(totalFundsAmount);
+            return expenseReportResponse;
         } else {
             List<ExpenseReport> expenseReports = expenses
                     .stream()
-                    .map(expenseReport -> ExpenseReport.builder().category(expenseReport.getCategory()).date(LocalDateTime.ofInstant(Instant.ofEpochMilli(expenseReport.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString()).expenseAmount(expenseReport.getAmount()).expenseName(expenseReport.getExpenseName()).build())
+                    .map(expenseReport -> {
+                        ExpenseReport expenseReport1 = new ExpenseReport();
+
+                        expenseReport1.setCategory(expenseReport.getCategory());
+                        expenseReport1.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expenseReport.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString());
+                        expenseReport1.setExpenseAmount(expenseReport.getAmount());
+                        expenseReport1.setExpenseName(expenseReport.getExpenseName());
+
+                        return expenseReport1;
+                    })
                     .collect(Collectors.toCollection(ArrayList::new));
             Long totalAmount = expenses.stream().map(e -> e.getAmount()).reduce(0L, (x, y) -> x + y);
 
             logger.debug("Found {} expenses {}", expenseReports.size(), expenseReports);
-            return ExpenseReportResponse.builder()
-                    .expenseReports(expenseReports).remainingFunds(totalFundsAmount - totalAmount).currentReportDate(localDateTime.getYear() + "-" + localDateTime.getMonthValue() + "-" + localDateTime.getDayOfMonth()).totalFunds(totalFundsAmount).build();
+            expenseReportResponse.setExpenseReports(expenseReports);
+            expenseReportResponse.setRemainingFunds(totalFundsAmount - totalAmount);
+            expenseReportResponse.setCurrentReportDate(localDateTime.getYear() + "-" + localDateTime.getMonthValue() + "-" + localDateTime.getDayOfMonth());
+            expenseReportResponse.setTotalFunds(totalFundsAmount);
+            expenseReportResponse.setLocalDateTime(localDateTime.toLocalDate().toString());
+            return expenseReportResponse;
 
         }
 
@@ -91,6 +117,22 @@ public class ExpenseReportService {
             categoryReportList.add(CategoryReport.builder().category(category).percentage(String.format("%.3f", percentage) + "%").totalAmount(amount).build());
         }
         return CategoryReportResponse.builder().categoryReportList(categoryReportList).totalFunds(totalFunds).remainingFunds(totalFunds - remaningFunds).build();
+    }
+
+    public ExpenseReportResponse getHistoryReport(String userName, int year, int month, int dayOfMonth) throws IOException {
+        LocalDate localDate = LocalDate.of(year, month, dayOfMonth);
+        UserEntity userEntity = userDao.findByUserName(userName);
+        if (userEntity != null) {
+            ExpenseReportHistory historyReport = expenseReportHistoryDao.findByLocalDateAndUser(localDate, userEntity);
+
+            if (historyReport != null) {
+                return objectMapper.readValue(historyReport.getReport(), ExpenseReportResponse.class);
+            }
+            return null;
+        }
+
+        return null;
+
     }
 
 }

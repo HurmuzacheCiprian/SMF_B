@@ -45,4 +45,7 @@ public class UserEntity implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<Expense> expenses;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<ExpenseReportHistory> expenseReportHistories;
 }
