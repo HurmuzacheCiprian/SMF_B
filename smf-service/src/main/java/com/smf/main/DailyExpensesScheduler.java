@@ -66,21 +66,12 @@ public class DailyExpensesScheduler {
             if (totalAmountDailyExpenses == null) {
                 logger.info("User with user name {} has no expense today {}", user.getUserName(), currentDateTime);
             } else {
-                Double totalFunds = fundDao.findTotalAmountForUser(user.getId());
-                if (totalFunds == null) {
-                    logger.info("User with user name {} has no funds registered", user.getUserName());
-                } else {
-                    if (user.getActualFunds() != null) {
-                        user.setActualFunds(user.getActualFunds() - totalAmountDailyExpenses);
-                    } else {
-                        user.setActualFunds(totalFunds - totalAmountDailyExpenses);
-                    }
-                    userDao.save(user);
-                }
+                computeActualFundsForUser(user, totalAmountDailyExpenses);
             }
         }
 
     }
+
 
     @Scheduled(fixedRate = 3 * 3600 * 1000)
     public void computeExpenseHistory() throws JsonProcessingException {
@@ -93,27 +84,45 @@ public class DailyExpensesScheduler {
                 logger.info(String.format("No expenses registered today for user %s", user.getUserName()));
                 continue;
             }
-            ExpenseReportHistory entity = expenseReportHistoryDao.findByLocalDate(LocalDate.parse(dailyReport.getLocalDateTime()));
+            ExpenseReportHistory expenseReportHistory = expenseReportHistoryDao.findByLocalDate(LocalDate.parse(dailyReport.getLocalDateTime()));
 
             if (dailyReport.getExpenseReports().isEmpty()) {
                 logger.debug(String.format("The user %s has no expenses", user.getUserName()));
                 continue;
             }
-            if (entity == null) {
-                logger.debug(String.format("No expense report history found for date %s", dailyReport.getLocalDateTime()));
-                ExpenseReportHistory history = new ExpenseReportHistory();
-                history.setUserEntity(user);
-                history.setLocalDate(LocalDate.parse(dailyReport.getLocalDateTime()));
-                history.setReport(objectMapper.writeValueAsString(dailyReport));
-                expenseReportHistoryDao.save(history);
-            } else {
-                logger.debug(String.format("Expense report history already found for date %s", dailyReport.getLocalDateTime()));
-                entity.setReport(objectMapper.writeValueAsString(dailyReport));
-                expenseReportHistoryDao.save(entity);
-            }
-
+            setExpenseReportHistory(user, dailyReport, expenseReportHistory);
         }
 
     }
+
+    private void setExpenseReportHistory(UserEntity user, ExpenseReportResponse dailyReport, ExpenseReportHistory expenseReportHistory) throws JsonProcessingException {
+        if (expenseReportHistory == null) {
+            logger.debug(String.format("No expense report history found for date %s", dailyReport.getLocalDateTime()));
+            ExpenseReportHistory history = new ExpenseReportHistory();
+            history.setUserEntity(user);
+            history.setLocalDate(LocalDate.parse(dailyReport.getLocalDateTime()));
+            history.setReport(objectMapper.writeValueAsString(dailyReport));
+            expenseReportHistoryDao.save(history);
+        } else {
+            logger.debug(String.format("Expense report history already found for date %s", dailyReport.getLocalDateTime()));
+            expenseReportHistory.setReport(objectMapper.writeValueAsString(dailyReport));
+            expenseReportHistoryDao.save(expenseReportHistory);
+        }
+    }
+
+    private void computeActualFundsForUser(UserEntity user, Double totalAmountDailyExpenses) {
+        Double totalFunds = fundDao.findTotalAmountForUser(user.getId());
+        if (totalFunds == null) {
+            logger.info("User with user name {} has no funds registered", user.getUserName());
+        } else {
+            if (user.getActualFunds() != null) {
+                user.setActualFunds(user.getActualFunds() - totalAmountDailyExpenses);
+            } else {
+                user.setActualFunds(totalFunds - totalAmountDailyExpenses);
+            }
+            userDao.save(user);
+        }
+    }
+
 
 }
