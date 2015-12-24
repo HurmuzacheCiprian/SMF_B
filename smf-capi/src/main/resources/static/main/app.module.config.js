@@ -48,6 +48,10 @@
                                        .state('home.expenses', {
                                            templateUrl: './expenses/expenses.html',
                                            controller: 'ExpensesController'
+                                       })
+                                       .state('home.daily', {
+                                           templateUrl: './daily_report/daily.report.html',
+                                           controller: 'DailyReportController'
                                        });
                                }]);
 })();

@@ -7,12 +7,12 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Created by cipriach on 08.12.2015.
+ * Created by cipriach on 21.12.2015.
  */
+@Builder
 @Getter
 @Setter
-@Builder
-public class FundsResponse {
-    private List<FundResponse> funds;
+public class EconomiesResponse {
+    private List<EconomyResponse> economies;
     private int totalElements;
 }

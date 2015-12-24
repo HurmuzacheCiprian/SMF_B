@@ -1,6 +1,5 @@
 package com.smf.main.resources;
 
-import com.smf.main.Category;
 import com.smf.main.SmfService;
 import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api")
 public class SmfResource {
 
-    private SmfService smfService;
+    private final SmfService smfService;
 
     @Autowired
     public SmfResource(SmfService smfService) {
@@ -22,19 +21,27 @@ public class SmfResource {
     }
 
     @RequestMapping(path = "/{userName}/funds", produces = "application/json", method = RequestMethod.GET)
-    public FundsResponse getAllFunds(@PathVariable String userName) {
-        return FundsResponse.builder().funds(smfService.getAllFundsByUserName(userName)).build();
+    public FundsResponse getAllFunds(@PathVariable String userName,
+                                     @RequestParam("pageNumber") int pageNumber,
+                                     @RequestParam("perPage") int perPage,
+                                     @RequestParam("direction") String direction,
+                                     @RequestParam("sortField") String sortField) {
+        return FundsResponse.builder().funds(smfService.getAllPageableFunds(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalFunds(userName)).build();
     }
 
     @RequestMapping(path = "/{userName}/expenses", produces = "application/json", method = RequestMethod.GET)
-    public ExpenseResponse getAllExpenses(@PathVariable("userName") String userName) {
-        return ExpenseResponse.builder().expense(smfService.getAllExpensesByUserName(userName)).build();
+    public ExpensesResponse getAllExpenses(@PathVariable String userName,
+                                           @RequestParam("pageNumber") int pageNumber,
+                                           @RequestParam("perPage") int perPage,
+                                           @RequestParam("direction") String direction,
+                                           @RequestParam("sortField") String sortField) {
+        return ExpensesResponse.builder().expenses(smfService.getAllPageableExpenses(pageNumber, perPage, direction, sortField, userName)).totalElements(smfService.getTotalExpenses(userName)).build();
     }
 
-    @RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
+    /*@RequestMapping(path = "/{userName}/expenses/{category}", produces = "application/json", method = RequestMethod.GET)
     public ExpenseResponse getAllExpensesByCategory(@PathVariable("userName") String userName, @PathVariable("category") Category category) {
-        return ExpenseResponse.builder().expense(smfService.getAllExpensesByCategory(userName, category)).build();
-    }
+        return ExpensesResponse.builder().expense(smfService.getAllExpensesByCategory(userName, category)).build();
+    }*/
 
     @RequestMapping(path = "/expenses/frequent", produces = "application/json", method = RequestMethod.GET)
     public FrequentCategory getMostFrequentlyExpenseByCategory() {
@@ -52,5 +59,14 @@ public class SmfResource {
         return smfService.registerExpense(userName, expensesRegistration) == true ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
     }
 
+    @RequestMapping(path = "/{userName}/fund/{fundId}", method = RequestMethod.DELETE)
+    public HttpStatus deleteFund(@PathVariable("userName") String userName, @PathVariable("fundId") Long fundId) {
+        return smfService.deleteFund(userName, fundId) == true ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    }
+
+    @RequestMapping(path = "/{userName}/expense/{fundId}", method = RequestMethod.DELETE)
+    public HttpStatus deleteExpense(@PathVariable("userName") String userName, @PathVariable("fundId") Long fundId) {
+        return smfService.deleteExpense(userName, fundId) == true ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    }
 
 }

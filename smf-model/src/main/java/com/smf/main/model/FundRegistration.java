@@ -12,5 +12,5 @@ import lombok.*;
 @AllArgsConstructor
 public class FundRegistration {
     private String fundName;
-    private Long fundAmount;
+    private Double fundAmount;
 }

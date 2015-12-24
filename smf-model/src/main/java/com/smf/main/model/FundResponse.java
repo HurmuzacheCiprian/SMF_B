@@ -14,8 +14,9 @@ import java.time.LocalDate;
 @Builder
 public class FundResponse {
 
+    private Long id;
     private String fundName;
-    private Long amount;
+    private Double amount;
     private String createdDate;
 
 }

@@ -3,6 +3,8 @@ package com.smf.main.model;
 import com.smf.main.Category;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * Created by cipriach on 08.12.2015.
  */
@@ -13,6 +15,6 @@ import lombok.*;
 @AllArgsConstructor
 public class ExpensesResponse {
 
-    private Category category;
-    private Long amount;
+    private List<ExpenseResponse> expenses;
+    private int totalElements;
 }

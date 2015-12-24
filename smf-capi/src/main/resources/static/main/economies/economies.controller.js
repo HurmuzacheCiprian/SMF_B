@@ -5,6 +5,7 @@
     var app = angular.module('smf');
 
     var EconomiesController = function($scope) {
+        var economies = [];
 
     };
 

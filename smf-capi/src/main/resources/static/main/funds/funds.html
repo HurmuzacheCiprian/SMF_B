@@ -10,19 +10,44 @@
             failed. Try again with another fund name or
             try again later!
         </div>
-        <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
-            <tr ng-repeat="fund in $data">
-                <td data-title="'Fund name'">{{fund.fundName}}</td>
-                <td data-title="'Fund amount (RON)'">{{fund.amount}}</td>
-                <td data-title="'Created'">{{fund.createdDate}}</td>
-                <td data-title="'Action'">
-                    <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
-                       ng-click="edit(fund.fundName,fund.fundAmount)"/>
+        <md-data-table-toolbar>
+            <h2 class="md-title">Funds</h2>
+        </md-data-table-toolbar>
 
-                    <a class="glyphicon glyphicon-remove" style="cursor:pointer;"
-                       ng-click="deleteFund(fund.fundName)"/>
-                </td>
-            </tr>
-        </table>
+        <md-data-table-container>
+            <table md-data-table md-progress="deferred">
+                <thead md-order="query.order" md-trigger="onOrderChange">
+                <tr>
+                    <th numeric name="Fund name" order-by="name"></th>
+                    <th numeric name="Fund amount" unit="RON" order-by="amount"></th>
+                    <th numeric name="Created" order-by="createdDate"></th>
+                    <th numeric name="Action"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-auto-select ng-repeat="fund in funds">
+                    <td>{{fund.fundName}}</td>
+                    <td>{{fund.amount}}</td>
+                    <td>{{fund.createdDate}}</td>
+                    <td>
+                        <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
+                           ng-click="edit(fund.fundName,fund.id)"/>
+
+                        <a class="glyphicon glyphicon-remove" style="cursor:pointer;"
+                           ng-click="deleteFund(fund.id)"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+
+        <md-data-table-pagination md-limit="query.limit"
+                                  md-page="query.page"
+                                  md-total="{{totalElements}}"
+                                  md-trigger="onPaginationChange">
+
+        </md-data-table-pagination>
+
     </div>
+
 </div>

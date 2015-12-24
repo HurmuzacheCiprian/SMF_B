@@ -1,30 +1,32 @@
 package com.smf.main.entities;
 
-import com.smf.main.Category;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
- * Created by cipriach on 08.12.2015.
+ * Created by cipriach on 23.12.2015.
  */
 @Entity
 @Getter
 @Setter
-public class Expense {
+public class ExpenseReportHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long amount;
-    private String expenseName;
-    @Enumerated(EnumType.STRING)
-    private Category category;
-    private Date date;
+
+    @Column(name = "date", unique = true)
+    private LocalDate localDate;
+
+    @Column(unique = true)
+    @Lob
+    private String report;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
     private UserEntity userEntity;
+
 }

@@ -1,6 +1,5 @@
 package com.smf.main;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smf.main.domain.ExpensesDao;
 import com.smf.main.domain.FundDao;
 import com.smf.main.domain.UserDao;
@@ -9,6 +8,8 @@ import com.smf.main.entities.Fund;
 import com.smf.main.entities.UserEntity;
 import com.smf.main.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +32,6 @@ public class SmfService {
     private final UserDao userDao;
     private final ExpensesDao expenseDao;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     @Autowired
     public SmfService(FundDao fundDao, UserDao userDao, ExpensesDao expenseDao) {
         this.fundDao = fundDao;
@@ -46,11 +45,60 @@ public class SmfService {
         return fundsResponse
                 .stream()
                 .map(fund -> FundResponse.builder()
+                        .id(fund.getId())
                         .fundName(fund.getName())
                         .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(fund.getCreatedDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
                         .amount(fund.getAmount())
                         .build())
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public List<FundResponse> getAllPageableFunds(int pageNumber, int perPage, String sortDirection, String sortField, String userName) {
+        UserEntity userEntity = userDao.findByUserName(userName);
+        if (userEntity == null) {
+            return new ArrayList<>();
+        }
+        Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        List<Fund> fundsResponse = fundDao.findByuserEntity(userEntity, new PageRequest(pageNumber - 1, perPage, sort, sortField));
+        return fundsResponse
+                .stream()
+                .map(fund -> FundResponse.builder()
+                        .id(fund.getId())
+                        .fundName(fund.getName())
+                        .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(fund.getCreatedDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
+                        .amount(fund.getAmount())
+                        .build())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public List<ExpenseResponse> getAllPageableExpenses(int pageNumber, int perPage, String sortDirection, String sortField, String userName) {
+        UserEntity userEntity = userDao.findByUserName(userName);
+        if (userEntity == null) {
+            return new ArrayList<>();
+        }
+        Sort.Direction sort = "asc".equals(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        List<Expense> expensesResponse = expenseDao.findExpenseByUserEntity(userEntity, new PageRequest(pageNumber - 1, perPage, sort, sortField));
+
+        return expensesResponse
+                .stream()
+                .map(expense -> ExpenseResponse.builder()
+                        .id(expense.getId())
+                        .expenseName(expense.getExpenseName())
+                        .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expense.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString())
+                        .amount(expense.getAmount())
+                        .category(expense.getCategory())
+                        .build())
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
+    }
+
+    public int getTotalFunds(String userName) {
+        return userDao.findAllFundsByUserName(userName).size();
+    }
+
+    public int getTotalExpenses(String userName) {
+        return userDao.findAllExpensesByUserName(userName).size();
     }
 
     @Transactional
@@ -68,16 +116,16 @@ public class SmfService {
         return true;
     }
 
-    public List<ExpensesResponse> getAllExpensesByUserName(String userName) {
+    public List<ExpenseResponse> getAllExpensesByUserName(String userName) {
         Set<Expense> expensesResponse = userDao.findAllExpensesByUserName(userName);
         return expensesResponse
                 .stream()
-                .map(expense -> ExpensesResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
+                .map(expense -> ExpenseResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Transactional
-    public boolean registerExpense(String userName, ExpensesRegistration economyRegistration) {
+    public boolean registerExpense(String userName, ExpensesRegistration expensesRegistration) {
         UserEntity userEntity = userDao.findByUserName(userName);
         if (userEntity == null) {
             return false;
@@ -86,18 +134,19 @@ public class SmfService {
         Expense expense = new Expense();
         expense.setDate(new Date());
         expense.setUserEntity(userEntity);
-        expense.setAmount(economyRegistration.getAmount());
-        expense.setCategory(economyRegistration.getCategory());
+        expense.setAmount(expensesRegistration.getAmount());
+        expense.setExpenseName(expensesRegistration.getExpenseName());
+        expense.setCategory(expensesRegistration.getCategory());
         expenseDao.save(expense);
 
         return true;
     }
 
-    public List<ExpensesResponse> getAllExpensesByCategory(String userName, Category category) {
+    public List<ExpenseResponse> getAllExpensesByCategory(String userName, Category category) {
         List<Expense> categorisedExpenses = expenseDao.findByCategory(category);
         return categorisedExpenses
                 .stream()
-                .map(expense -> ExpensesResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
+                .map(expense -> ExpenseResponse.builder().amount(expense.getAmount()).category(expense.getCategory()).build())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -105,6 +154,26 @@ public class SmfService {
         List<Object[]> response = expenseDao.findMostFrequentExpenseCategory();
         Object[] o = response.get(0);   //the most frequent category and o[1] is the value of count
         return FrequentCategory.builder().category(Category.valueOf(o[0].toString())).count(Long.valueOf(o[1].toString())).build();
+    }
+
+    @Transactional
+    public boolean deleteFund(String userName, Long fundId) {
+        Long id = fundDao.findFundByUser(fundId, userName);
+        if (id == null) {
+            return false;
+        }
+        fundDao.delete(id);
+        return true;
+    }
+
+    public boolean deleteExpense(String userName, Long expenseId) {
+        Long id = expenseDao.findExpensesByUser(expenseId,userName);
+
+        if(id == null) {
+            return false;
+        }
+        expenseDao.delete(id);
+        return true;
     }
 
 }

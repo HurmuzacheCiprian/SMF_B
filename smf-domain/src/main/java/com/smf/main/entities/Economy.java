@@ -21,6 +21,7 @@ public class Economy {
     private Date createdDate;
     private String info;
 
+
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private UserEntity userEntity;

@@ -1,5 +1,45 @@
 <div class="row">
     <div class="col-md-12 col-sm-3">
-        <span>Expenses here</span>
+        <md-button class="md-fab" class="addButton" aria-label="Eat cake" ng-click="registerExpense($event)">
+            <a class="glyphicon glyphicon-plus"></a>
+        </md-button>
+    </div>
+    <div class="col-md-12 col-sm-3">
+        <md-data-table-toolbar>
+            <h2 class="md-title">Expenses</h2>
+        </md-data-table-toolbar>
+
+        <md-data-table-container>
+            <table md-data-table md-progress="deferred">
+                <thead md-order="query.order" md-trigger="onOrderChange">
+                <tr>
+                    <th numeric name="Expense name" order-by="expenseName"></th>
+                    <th numeric name="Category" order-by="category"></th>
+                    <th numeric name="Expense amount" unit="RON" order-by="amount"></th>
+                    <th numeric name="Created" order-by="date"></th>
+                    <th numeric name="Action"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-auto-select ng-repeat="expense in expenses">
+                    <td>{{expense.expenseName}}</td>
+                    <td>{{expense.category}}</td>
+                    <td>{{expense.amount}}</td>
+                    <td>{{expense.createdDate}}</td>
+                    <td>
+                        <a class="glyphicon glyphicon-pencil" style="margin-right: 10px; cursor:pointer;"
+                           ng-click="edit(expense.name,expense.id)"/>
+                        <a class="glyphicon glyphicon-remove" style="margin-right: 10px; cursor:pointer;"
+                           ng-click="deleteExpense(expense.id)"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+        <md-data-table-pagination md-limit="query.limit"
+                                  md-page="query.page"
+                                  md-total="{{totalElements}}"
+                                  md-trigger="onPaginationChange">
+        </md-data-table-pagination>
     </div>
 </div>
