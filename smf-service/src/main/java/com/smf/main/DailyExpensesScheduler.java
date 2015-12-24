@@ -67,7 +67,6 @@ public class DailyExpensesScheduler {
                 logger.info("User with user name {} has no expense today {}", user.getUserName(), currentDateTime);
             } else {
                 Double totalFunds = fundDao.findTotalAmountForUser(user.getId());
-
                 if (totalFunds == null) {
                     logger.info("User with user name {} has no funds registered", user.getUserName());
                 } else {
@@ -89,8 +88,14 @@ public class DailyExpensesScheduler {
         List<UserEntity> userEntities = userDao.findAll();
         for (UserEntity user : userEntities) {
             ExpenseReportResponse dailyReport = expenseReportService.getDailyExpenseReport(user.getUserName());
+
+            if (dailyReport.getLocalDateTime() == null) {
+                logger.info(String.format("No expenses registered today for user %s", user.getUserName()));
+                continue;
+            }
             ExpenseReportHistory entity = expenseReportHistoryDao.findByLocalDate(LocalDate.parse(dailyReport.getLocalDateTime()));
-            if(dailyReport.getExpenseReports().isEmpty()) {
+
+            if (dailyReport.getExpenseReports().isEmpty()) {
                 logger.debug(String.format("The user %s has no expenses", user.getUserName()));
                 continue;
             }
