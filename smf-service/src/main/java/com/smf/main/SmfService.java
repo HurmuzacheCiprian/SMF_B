@@ -107,6 +107,9 @@ public class SmfService {
         if (user == null) {
             return false;
         }
+        if (user.getActualFunds() != null) {
+            user.setActualFunds(user.getActualFunds() + fundRegistration.getFundAmount());
+        }
         Fund fund = new Fund();
         fund.setCreatedDate(new Date());
         fund.setAmount(fundRegistration.getFundAmount());
@@ -158,18 +161,24 @@ public class SmfService {
 
     @Transactional
     public boolean deleteFund(String userName, Long fundId) {
-        Long id = fundDao.findFundByUser(fundId, userName);
-        if (id == null) {
+        UserEntity user = userDao.findByUserName(userName);
+        Fund fund = fundDao.findOne(fundId);
+
+        if (user != null && user.getActualFunds() != null && fund != null) {
+            user.setActualFunds(user.getActualFunds() - fund.getAmount());
+        }
+
+        if (fund == null) {
             return false;
         }
-        fundDao.delete(id);
+        fundDao.delete(fund);
         return true;
     }
 
     public boolean deleteExpense(String userName, Long expenseId) {
-        Long id = expenseDao.findExpensesByUser(expenseId,userName);
+        Long id = expenseDao.findExpensesByUser(expenseId, userName);
 
-        if(id == null) {
+        if (id == null) {
             return false;
         }
         expenseDao.delete(id);
