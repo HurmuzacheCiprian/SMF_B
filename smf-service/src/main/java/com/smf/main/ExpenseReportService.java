@@ -55,68 +55,53 @@ public class ExpenseReportService {
     public ExpenseReportResponse getDailyExpenseReport(String userName) {
         LocalDateTime localDateTime = LocalDateTime.now();
         UserEntity userEntity = userDao.findByUserName(userName);
-        Double totalFundsAmount = fundDao.findTotalAmountForUser(userEntity.getId());
+        ExpenseReportResponse expenseReportResponse = new ExpenseReportResponse();
 
         if (userEntity == null) {
             logger.debug("No user found with user name {}", userName);
-            return null;
+            return expenseReportResponse;
         }
 
-        if (userEntity.getActualFunds() != null) {
-            totalFundsAmount = userEntity.getActualFunds();
-        }
+        Double totalFundsAmount = fundDao.findTotalAmountForUser(userEntity.getId());
 
         List<Expense> expenses = expensesDao.findExpensesByDayAndMonth(userEntity.getId(), localDateTime.getDayOfMonth(), localDateTime.getMonthValue());
-        ExpenseReportResponse expenseReportResponse = new ExpenseReportResponse();
+
         if (expenses.size() == 0) {
             logger.debug("No expenses found for user {}", userName);
             expenseReportResponse.setExpenseReports(new ArrayList<>());
-            expenseReportResponse.setRemainingFunds(totalFundsAmount);
+            expenseReportResponse.setRemainingFunds(userEntity.getActualFunds());
             return expenseReportResponse;
         } else {
-            List<ExpenseReport> expenseReports = expenses
-                    .stream()
-                    .map(expenseReport -> {
-                        ExpenseReport expenseReport1 = new ExpenseReport();
-
-                        expenseReport1.setCategory(expenseReport.getCategory());
-                        expenseReport1.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expenseReport.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString());
-                        expenseReport1.setExpenseAmount(expenseReport.getAmount());
-                        expenseReport1.setExpenseName(expenseReport.getExpenseName());
-
-                        return expenseReport1;
-                    })
-                    .collect(Collectors.toCollection(ArrayList::new));
+            List<ExpenseReport> expenseReports = getExpenseReports(expenses);
             Long totalAmount = expenses.stream().map(e -> e.getAmount()).reduce(0L, (x, y) -> x + y);
 
             logger.debug("Found {} expenses {}", expenseReports.size(), expenseReports);
             expenseReportResponse.setExpenseReports(expenseReports);
-            expenseReportResponse.setRemainingFunds(totalFundsAmount - totalAmount);
+            expenseReportResponse.setRemainingFunds(userEntity.getActualFunds());
             expenseReportResponse.setCurrentReportDate(localDateTime.getYear() + "-" + localDateTime.getMonthValue() + "-" + localDateTime.getDayOfMonth());
             expenseReportResponse.setTotalFunds(totalFundsAmount);
             expenseReportResponse.setLocalDateTime(localDateTime.toLocalDate().toString());
             return expenseReportResponse;
-
         }
-
     }
 
     public CategoryReportResponse getMonthlyReportPerCategory(String userName) {
         UserEntity user = userDao.findByUserName(userName);
         LocalDateTime localDateTime = LocalDateTime.now();
         Double totalFunds = fundDao.findTotalAmountForUser(user.getId());
-        Double remaningFunds = 0D;
         List<Object[]> categoryReport = expensesDao.findMonthlyCategoryReport(user.getId(), localDateTime.getMonthValue());
+
+        Double remainingFunds = 0D;
         List<CategoryReport> categoryReportList = new ArrayList<>();
         for (Object[] obj : categoryReport) {
             Category category = Category.valueOf((String) obj[0]);
             BigDecimal bd = (BigDecimal) obj[1];
             Double amount = bd.doubleValue();
-            remaningFunds += amount;
+            remainingFunds += amount;
             Double percentage = ((amount * 100) / totalFunds);
             categoryReportList.add(CategoryReport.builder().category(category).percentage(String.format("%.3f", percentage) + "%").totalAmount(amount).build());
         }
-        return CategoryReportResponse.builder().categoryReportList(categoryReportList).totalFunds(totalFunds).remainingFunds(totalFunds - remaningFunds).build();
+        return CategoryReportResponse.builder().categoryReportList(categoryReportList).totalFunds(totalFunds).remainingFunds(totalFunds - remainingFunds).build();
     }
 
     public ExpenseReportResponse getHistoryReport(String userName, int year, int month, int dayOfMonth) throws IOException {
@@ -133,6 +118,22 @@ public class ExpenseReportService {
 
         return null;
 
+    }
+
+    private List<ExpenseReport> getExpenseReports(List<Expense> expenses) {
+        return expenses
+                .stream()
+                .map(expenseReport -> {
+                    ExpenseReport expenseReport1 = new ExpenseReport();
+
+                    expenseReport1.setCategory(expenseReport.getCategory());
+                    expenseReport1.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(expenseReport.getDate().getTime()), ZoneId.systemDefault()).toLocalDate().toString());
+                    expenseReport1.setExpenseAmount(expenseReport.getAmount());
+                    expenseReport1.setExpenseName(expenseReport.getExpenseName());
+
+                    return expenseReport1;
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

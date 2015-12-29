@@ -23,6 +23,7 @@ public class Expense {
     @Enumerated(EnumType.STRING)
     private Category category;
     private Date date;
+    private boolean isComputed = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")

@@ -39,4 +39,10 @@ public class ExpensesReportResource {
             return new ExpenseReportResponse();
         }
     }
+
+    //TODO
+    @RequestMapping(path = "/daily/{userName}/category", method = RequestMethod.GET)
+    public ExpenseReportResponse getDailyExpenseReportCategory(@PathVariable("userName") String userName) {
+        return expenseReportService.getDailyExpenseReport(userName);
+    }
 }

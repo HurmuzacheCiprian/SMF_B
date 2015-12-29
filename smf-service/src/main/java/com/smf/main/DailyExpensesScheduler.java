@@ -51,7 +51,7 @@ public class DailyExpensesScheduler {
      * <p>
      * 24h -> 86400000 ms
      */
-    @Scheduled(fixedRate = 24 * 3600 * 1000)
+    @Scheduled(fixedRate = 5 * 60 * 1000)
     public void computeHourlyExpensesForAllUsers() {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -62,18 +62,18 @@ public class DailyExpensesScheduler {
         List<UserEntity> users = userDao.findAll();
 
         for (UserEntity user : users) {
-            Double totalAmountDailyExpenses = expensesDao.findTotalAmountDailyExpenses(user.getId(), month, day);
+            Double totalAmountDailyExpenses = expensesDao.findTotalAmountOfExpenses(user.getId());
             if (totalAmountDailyExpenses == null) {
                 logger.info("User with user name {} has no expense today {}", user.getUserName(), currentDateTime);
             } else {
                 computeActualFundsForUser(user, totalAmountDailyExpenses);
             }
+            expensesDao.updateExpensesToComputed(user.getId());
         }
-
     }
 
 
-    @Scheduled(fixedRate = 3 * 3600 * 1000)
+    @Scheduled(fixedRate = 30 * 60 * 1000)
     public void computeExpenseHistory() throws JsonProcessingException {
         logger.info("Computing the expense history");
         List<UserEntity> userEntities = userDao.findAll();
@@ -123,6 +123,4 @@ public class DailyExpensesScheduler {
             userDao.save(user);
         }
     }
-
-
 }
