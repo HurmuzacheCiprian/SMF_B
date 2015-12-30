@@ -52,6 +52,10 @@
                                        .state('home.daily', {
                                            templateUrl: './daily_report/daily.report.html',
                                            controller: 'DailyReportController'
+                                       })
+                                       .state('home.periodic', {
+                                          templateUrl: './periodic_report/periodic.html',
+                                          controller: 'PeriodicController'
                                        });
                                }]);
 })();

@@ -1,0 +1,15 @@
+<div class="row" style="margin:15px;">
+    <div class="row">
+        <div class="col-md-1">
+            <md-select ng-model="period">
+                <md-option ng-repeat="period in periods" value="{{period}}"  ng-click="getPeriodRep(period)">{{period}}</md-option>
+            </md-select>
+        </div>
+    </div>
+
+    <div class="row">
+        <canvas id="bar" class="chart chart-bar"
+                chart-data="data" chart-labels="labels" chart-series="series"
+        </canvas>
+    </div>
+</div>
