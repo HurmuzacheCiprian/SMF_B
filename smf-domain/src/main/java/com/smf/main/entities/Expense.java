@@ -18,7 +18,7 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long amount;
+    private Double amount;
     private String expenseName;
     @Enumerated(EnumType.STRING)
     private Category category;

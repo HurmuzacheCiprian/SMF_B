@@ -1,8 +1,10 @@
 package com.smf.main.resources;
 
 import com.smf.main.ExpenseReportService;
+import com.smf.main.PeriodicReportService;
 import com.smf.main.model.CategoryReportResponse;
 import com.smf.main.model.ExpenseReportResponse;
+import com.smf.main.model.PeriodicCategoryReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class ExpensesReportResource {
     @Autowired
     private ExpenseReportService expenseReportService;
 
+    @Autowired
+    private PeriodicReportService periodicReportService;
+
     @RequestMapping(path = "/daily/{userName}", method = RequestMethod.GET)
     public ExpenseReportResponse getHourlyExpenseReport(@PathVariable("userName") String userName) {
         return expenseReportService.getDailyExpenseReport(userName);
@@ -26,6 +31,12 @@ public class ExpensesReportResource {
     @RequestMapping(path = "/monthly/{userName}/categories", method = RequestMethod.GET)
     public CategoryReportResponse getCategoryExpenseReport(@PathVariable("userName") String userName) {
         return expenseReportService.getMonthlyReportPerCategory(userName);
+    }
+
+    @RequestMapping(path = "/periodic/{userName}", method = RequestMethod.GET)
+    public PeriodicCategoryReport getPeriodicCategoryExpenseReport(@PathVariable("userName") String userName,
+                                                                   @RequestParam("period") int period) {
+        return periodicReportService.createPeriodicCategoryReport(userName, period);
     }
 
     @RequestMapping(path = "/history/{userName}/categories", method = RequestMethod.GET)
@@ -38,11 +49,5 @@ public class ExpensesReportResource {
         } catch (IOException e) {
             return new ExpenseReportResponse();
         }
-    }
-
-    //TODO
-    @RequestMapping(path = "/daily/{userName}/category", method = RequestMethod.GET)
-    public ExpenseReportResponse getDailyExpenseReportCategory(@PathVariable("userName") String userName) {
-        return expenseReportService.getDailyExpenseReport(userName);
     }
 }

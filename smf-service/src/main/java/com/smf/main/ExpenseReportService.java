@@ -73,7 +73,7 @@ public class ExpenseReportService {
             return expenseReportResponse;
         } else {
             List<ExpenseReport> expenseReports = getExpenseReports(expenses);
-            Long totalAmount = expenses.stream().map(e -> e.getAmount()).reduce(0L, (x, y) -> x + y);
+            Double totalAmount = expenses.stream().map(e -> e.getAmount()).reduce(0D, (x, y) -> x + y);
 
             logger.debug("Found {} expenses {}", expenseReports.size(), expenseReports);
             expenseReportResponse.setExpenseReports(expenseReports);

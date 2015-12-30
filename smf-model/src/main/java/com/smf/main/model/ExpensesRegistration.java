@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 public class ExpensesRegistration {
 
-    private Long amount;
+    private Double amount;
     private Category category;
     private String expenseName;
     private String info;

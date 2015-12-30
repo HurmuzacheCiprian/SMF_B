@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
  * Created by cipriach on 08.12.2015.
  */
@@ -19,5 +17,5 @@ public class ExpenseResponse {
     private String expenseName;
     private String createdDate;
     private Category category;
-    private Long amount;
+    private Double amount;
 }

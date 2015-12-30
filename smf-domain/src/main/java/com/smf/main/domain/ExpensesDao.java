@@ -43,4 +43,8 @@ public interface ExpensesDao extends CrudRepository<Expense, Long> {
     @Modifying
     @Query(value = "update Expense set is_computed = true where user_entity_id = ?1", nativeQuery = true)
     void updateExpensesToComputed(Long userId);
+
+    @Query(value = "select * from Expense e where e.user_entity_id = ?1 and extract(month from e.date) = ?2", nativeQuery = true)
+    List<Expense> findExpensesByMonth(Long userId, int month);
+
 }

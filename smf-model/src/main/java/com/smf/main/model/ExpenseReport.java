@@ -1,7 +1,10 @@
 package com.smf.main.model;
 
 import com.smf.main.Category;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by cipriach on 22.12.2015.
@@ -12,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ExpenseReport {
     private String expenseName;
-    private Long expenseAmount;
+    private Double expenseAmount;
     private Category category;
     private String date;
 
